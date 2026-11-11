@@ -38,8 +38,14 @@ export function RevealScope({ children }: { children: ReactNode }) {
         ScrollTrigger.batch(items, {
           start: "top 90%",
           once: true,
-          onEnter: (batch) =>
-            gsap.to(batch, { opacity: 1, y: 0, duration, ease, stagger: 0.06, overwrite: true }),
+          onEnter: (batch) => {
+            // A long jump (anchor, focus, deep link) enters everything skipped over in one
+            // batch; show those instantly so the stagger only runs on what's on screen.
+            const passed = batch.filter((el) => el.getBoundingClientRect().bottom < 0);
+            const visible = batch.filter((el) => !passed.includes(el));
+            gsap.set(passed, { opacity: 1, y: 0 });
+            gsap.to(visible, { opacity: 1, y: 0, duration, ease, stagger: 0.06, overwrite: true });
+          },
         });
       });
 
