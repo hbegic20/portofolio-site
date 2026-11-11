@@ -16,7 +16,7 @@ export type Section = {
 /** Page sections in render order. Used by page, nav and the ⌘K palette. */
 export const sections: readonly Section[] = [
   { id: "top", slug: "top", inNav: false },
-  { id: "about", index: "01", slug: "about", title: "[About headline]", inNav: true },
+  { id: "about", index: "01", slug: "about", inNav: true },
   { id: "skills", index: "02", slug: "skills", title: "ls ~/stack", inNav: true },
   { id: "projects", index: "03", slug: "projects", title: "git log --featured", inNav: true },
   { id: "experience", index: "04", slug: "experience", title: "git log --author=me", inNav: true },
@@ -24,3 +24,9 @@ export const sections: readonly Section[] = [
   { id: "oss", index: "06", slug: "oss", title: "Shipping in public", inNav: false },
   { id: "contact", index: "07", slug: "contact", title: "$ ./say-hello.sh", inNav: true },
 ];
+
+export function getSection(id: SectionId): Section {
+  const section = sections.find((s) => s.id === id);
+  if (!section) throw new Error(`Unknown section: ${id}`);
+  return section;
+}
