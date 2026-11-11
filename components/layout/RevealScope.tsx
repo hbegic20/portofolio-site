@@ -33,12 +33,13 @@ export function RevealScope({ children }: { children: ReactNode }) {
         });
 
         const items = gsap.utils.toArray<HTMLElement>("[data-reveal=item]");
-        gsap.set(items, { autoAlpha: 0, y: 24 });
+        // opacity, not autoAlpha: visibility:hidden would make unrevealed links untabbable.
+        gsap.set(items, { opacity: 0, y: 24 });
         ScrollTrigger.batch(items, {
           start: "top 90%",
           once: true,
           onEnter: (batch) =>
-            gsap.to(batch, { autoAlpha: 1, y: 0, duration, ease, stagger: 0.06, overwrite: true }),
+            gsap.to(batch, { opacity: 1, y: 0, duration, ease, stagger: 0.06, overwrite: true }),
         });
       });
 

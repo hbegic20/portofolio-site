@@ -42,7 +42,13 @@ export function ProjectPanel({ project, panel }: ProjectPanelProps) {
         </div>
       );
     case "code":
-      return <CodeBlock filename={project.code.filename} code={project.code.snippet} />;
+      return (
+        <CodeBlock
+          filename={project.code.filename}
+          code={project.code.snippet}
+          lang={project.code.lang}
+        />
+      );
     case "results":
       return (
         <div className="flex flex-col gap-5">

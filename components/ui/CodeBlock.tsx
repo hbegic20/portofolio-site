@@ -1,18 +1,25 @@
+import { highlight } from "@/lib/shiki";
+
 type CodeBlockProps = {
   filename: string;
   code: string;
+  lang: string;
 };
 
-/** Plain code block; Shiki highlighting is added in step 4. */
-export function CodeBlock({ filename, code }: CodeBlockProps) {
+/** Server component: Shiki output is static HTML, no client JS. */
+export async function CodeBlock({ filename, code, lang }: CodeBlockProps) {
+  const html = await highlight(code, lang);
+
   return (
     <figure className="overflow-hidden rounded-control border border-border bg-surface-sunk">
-      <figcaption className="border-b border-border px-4 py-2 font-mono text-xs text-text-subtle">
-        {filename}
+      <figcaption className="flex items-center justify-between border-b border-border px-4 py-2 font-mono text-xs text-text-subtle">
+        <span>{filename}</span>
+        <span>{lang}</span>
       </figcaption>
-      <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-6 text-text-muted">
-        <code>{code}</code>
-      </pre>
+      <div
+        className="overflow-x-auto font-mono text-[13px] leading-6 [&_pre]:w-fit [&_pre]:min-w-full [&_pre]:!bg-transparent [&_pre]:p-4"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </figure>
   );
 }

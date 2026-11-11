@@ -58,7 +58,13 @@ function placeholder(n: number, hash: string): Project {
     code: {
       filename: "[path/to/file.ts]",
       lang: "ts",
-      snippet: "// [Paste one real, representative snippet here]\n",
+      snippet: [
+        "// [Paste one real, representative snippet here — 10–25 lines]",
+        "export async function handler(req: Request): Promise<Response> {",
+        '  const data = await fetchSomething("[replace me]");',
+        "  return Response.json(data, { status: 200 });",
+        "}",
+      ].join("\n"),
     },
     results: {
       metrics: [

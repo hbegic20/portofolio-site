@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/content/projects";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
+import { Tabs } from "@/components/ui/Tabs";
 import { cn } from "@/lib/utils";
 import { DeviceMockup } from "./project/DeviceMockup";
 import { ProjectPanel, panels } from "./project/ProjectPanel";
@@ -61,15 +62,14 @@ export function ProjectBlock({ project, index, total }: ProjectBlockProps) {
           ))}
         </ul>
 
-        {/* Becomes an accessible tablist in step 4; static stack for now. */}
-        <div className="flex flex-col gap-8">
-          {panels.map((p) => (
-            <div key={p.key}>
-              <h4 className="mb-3 font-mono text-xs text-text-subtle">{`// ${p.label.toLowerCase()}`}</h4>
-              <ProjectPanel project={project} panel={p.key} />
-            </div>
-          ))}
-        </div>
+        <Tabs
+          label={`${project.name} details`}
+          items={panels.map((p) => ({
+            id: p.key,
+            label: p.label,
+            content: <ProjectPanel project={project} panel={p.key} />,
+          }))}
+        />
 
         <div className="flex flex-wrap gap-3">
           {project.links.demo && (
