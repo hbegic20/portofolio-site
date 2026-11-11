@@ -13,7 +13,11 @@ export function Skills() {
 
       <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
         {skillGroups.map((group, i) => (
-          <li key={group.path} className={i < 2 ? "lg:col-span-3" : "lg:col-span-2"}>
+          <li
+            key={group.path}
+            data-reveal="item"
+            className={i < 2 ? "lg:col-span-3" : "lg:col-span-2"}
+          >
             <Card className="h-full p-6">
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="font-semibold tracking-tight">{group.title}</h3>
@@ -31,7 +35,7 @@ export function Skills() {
         ))}
       </ul>
 
-      <p className="mt-8 font-mono text-sm text-text-subtle">
+      <p data-reveal="item" className="mt-8 font-mono text-sm text-text-subtle">
         <span className="text-ok">$</span> currently learning:{" "}
         <span className="text-text-muted">{profile.currentlyLearning}</span>
       </p>

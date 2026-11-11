@@ -1,5 +1,6 @@
 import { Footer } from "@/components/layout/Footer";
 import { Nav } from "@/components/layout/Nav";
+import { RevealScope } from "@/components/layout/RevealScope";
 import { About } from "@/components/sections/About";
 import { ApiPlayground } from "@/components/sections/ApiPlayground";
 import { Contact } from "@/components/sections/Contact";
@@ -13,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <main id="main">
+      <RevealScope>
         <Hero />
         <About />
         <Skills />
@@ -22,7 +23,7 @@ export default function Home() {
         <ApiPlayground />
         <OpenSource />
         <Contact />
-      </main>
+      </RevealScope>
       <Footer />
     </>
   );

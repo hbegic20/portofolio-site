@@ -9,11 +9,11 @@ export function ApiPlayground() {
   return (
     <Section id="api" alt>
       <SectionHeading section={getSection("api")} />
-      <p className="mt-4 max-w-[56ch] text-text-muted">
+      <p data-reveal="item" className="mt-4 max-w-[56ch] text-text-muted">
         This site has a real API. Send a request and read the response.
       </p>
 
-      <Card className="mt-10 overflow-hidden">
+      <Card data-reveal="item" className="mt-10 overflow-hidden">
         <form className="flex flex-col gap-3 border-b border-border p-4 sm:flex-row sm:items-center">
           <span className="w-fit rounded-md bg-ok/15 px-2.5 py-1 font-mono text-xs font-semibold text-ok">
             GET

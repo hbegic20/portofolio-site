@@ -23,14 +23,14 @@ export function ProjectBlock({ project, index, total }: ProjectBlockProps) {
       aria-labelledby={headingId}
       className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16"
     >
-      <div className={cn("min-w-0 lg:sticky lg:top-24", flip && "lg:order-2")}>
+      <div data-reveal="item" className={cn("min-w-0 lg:sticky lg:top-24", flip && "lg:order-2")}>
         <p className="mb-4 font-mono text-xs text-text-subtle">
           {pad(index + 1)} / {pad(total)} · <span className="text-accent">{project.hash}</span>
         </p>
         <DeviceMockup media={project.media} name={project.name} flip={flip} />
       </div>
 
-      <div className="flex min-w-0 flex-col gap-7">
+      <div data-reveal="item" className="flex min-w-0 flex-col gap-7">
         <div>
           <h3 id={headingId} className="text-3xl font-semibold tracking-[-0.035em] md:text-4xl">
             {project.name}

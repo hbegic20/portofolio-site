@@ -14,7 +14,7 @@ export function Experience() {
       <div className="grid gap-12 lg:grid-cols-[minmax(0,440px)_1fr] lg:gap-20">
         <div className="flex min-w-0 flex-col items-start gap-8 lg:sticky lg:top-24 lg:self-start">
           <SectionHeading section={getSection("experience")} />
-          <Button href={profile.cvUrl} variant="outline" download>
+          <Button href={profile.cvUrl} variant="outline" download data-reveal="item">
             Full CV (PDF) <ArrowDown aria-hidden className="size-4" />
           </Button>
         </div>
@@ -24,7 +24,7 @@ export function Experience() {
             {jobs.map((job, i) => {
               const current = i === 0 && !job.end;
               return (
-                <li key={job.hash} className="relative">
+                <li key={job.hash} data-reveal="item" className="relative">
                   <span
                     aria-hidden
                     className={cn(
@@ -61,7 +61,10 @@ export function Experience() {
             })}
           </ol>
 
-          <div className="rounded-card border border-dashed border-border-strong p-6">
+          <div
+            data-reveal="item"
+            className="rounded-card border border-dashed border-border-strong p-6"
+          >
             <h3 className="font-mono text-xs text-text-subtle">
               {"// education & certifications"}
             </h3>

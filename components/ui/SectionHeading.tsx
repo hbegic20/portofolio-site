@@ -23,7 +23,7 @@ export function SectionHeading({ section, title, className }: SectionHeadingProp
   return (
     <div className={cn("flex flex-col gap-4", className)}>
       {section.index && (
-        <p className="font-mono text-xs text-text-subtle">
+        <p data-reveal="item" className="font-mono text-xs text-text-subtle">
           {`// ${section.index} — ${section.slug}`}
         </p>
       )}
@@ -31,7 +31,12 @@ export function SectionHeading({ section, title, className }: SectionHeadingProp
         id={`${section.id}-heading`}
         className="text-h2 leading-[1.05] font-semibold tracking-heading text-balance"
       >
-        {title ?? <NoBreakWords text={section.title ?? ""} />}
+        {/* Mask: the inner span slides up from below the clipped edge. */}
+        <span className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
+          <span data-reveal="heading" className="block">
+            {title ?? <NoBreakWords text={section.title ?? ""} />}
+          </span>
+        </span>
       </h2>
     </div>
   );

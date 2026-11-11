@@ -16,7 +16,7 @@ export function About() {
   return (
     <Section id="about" alt>
       <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-20">
-        <div className="relative mx-auto w-full max-w-[420px]">
+        <div data-reveal="item" className="relative mx-auto w-full max-w-[420px]">
           <div className="relative aspect-square overflow-hidden rounded-card border border-border bg-surface-sunk">
             {about.photo ? (
               <Image
@@ -40,18 +40,20 @@ export function About() {
 
         <div className="flex min-w-0 flex-col gap-8">
           <SectionHeading section={getSection("about")} title={about.headline} />
-          <p className="max-w-[62ch] text-lg text-text-muted">{about.bio}</p>
+          <p data-reveal="item" className="max-w-[62ch] text-lg text-text-muted">
+            {about.bio}
+          </p>
 
           <dl className="grid gap-4 sm:grid-cols-3">
             {about.facts.map((fact) => (
-              <Card key={fact.label} className="p-5">
+              <Card key={fact.label} data-reveal="item" className="p-5">
                 <dt className="font-mono text-xs text-text-subtle">{fact.label}</dt>
                 <dd className="mt-2 text-sm">{fact.value}</dd>
               </Card>
             ))}
           </dl>
 
-          <div className="flex flex-wrap gap-3">
+          <div data-reveal="item" className="flex flex-wrap gap-3">
             <Button href={profile.cvUrl} download>
               <Download aria-hidden className="size-4" /> Download CV (PDF)
             </Button>

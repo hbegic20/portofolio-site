@@ -27,7 +27,7 @@ export function Contact() {
           </p>
         </div>
 
-        <Card className="min-w-0 p-6 md:p-8">
+        <Card data-reveal="item" className="min-w-0 p-6 md:p-8">
           <form className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <label htmlFor="contact-name" className={label}>

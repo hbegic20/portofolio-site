@@ -14,7 +14,7 @@ export function OpenSource() {
 
       <ul className="mt-12 grid gap-4 md:grid-cols-3">
         {pinnedRepos.map((repo, i) => (
-          <li key={i}>
+          <li key={i} data-reveal="item">
             <Card className="group relative flex h-full flex-col gap-3 p-6 transition-colors hover:border-border-strong">
               <h3 className="flex items-center justify-between gap-2 font-mono text-sm">
                 <a href={repo.href} className="after:absolute after:inset-0">
@@ -41,7 +41,7 @@ export function OpenSource() {
       {testimonials.length > 0 && (
         <div className="mt-16 grid gap-4 md:grid-cols-2">
           {testimonials.map((t) => (
-            <Card key={t.name} className="p-8">
+            <Card key={t.name} data-reveal="item" className="p-8">
               <figure className="flex h-full flex-col gap-6">
                 <blockquote className="flex-1 text-lg text-balance">“{t.quote}”</blockquote>
                 <figcaption className="font-mono text-xs text-text-subtle">
