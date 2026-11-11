@@ -2,14 +2,21 @@ import { ArrowDown, Download } from "lucide-react";
 import { profile } from "@/content/profile";
 import { skillGroups } from "@/content/skills";
 import { Button } from "@/components/ui/Button";
+import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { Container } from "@/components/ui/Container";
 import { Terminal, type TerminalLine } from "@/components/ui/Terminal";
 
-const stackJson = JSON.stringify(
-  Object.fromEntries(skillGroups.slice(0, 3).map((g) => [g.path.slice(1), g.items.slice(0, 2)])),
-  null,
-  2,
-);
+// One line per group keeps the floating window short enough not to cover the room.
+const stackJson = [
+  "{",
+  ...skillGroups
+    .slice(0, 3)
+    .map(
+      (g, i, all) =>
+        `  "${g.path.slice(1)}": ${JSON.stringify(g.items.slice(0, 2))}${i < all.length - 1 ? "," : ""}`,
+    ),
+  "}",
+].join("\n");
 
 const lines: TerminalLine[] = [
   { kind: "cmd", text: "whoami" },
@@ -59,15 +66,11 @@ export function Hero() {
         </div>
 
         <div className="relative min-w-0">
-          {/* 3D room canvas mounts here in step 6. */}
-          <div
-            aria-hidden
-            className="aspect-[4/3.4] w-full rounded-card border border-dashed border-border-strong bg-surface-sunk"
-          />
+          <HeroCanvas />
           <Terminal
             title="~/zsh"
             lines={lines}
-            className="relative -mt-24 ml-auto w-[min(100%,360px)] sm:absolute sm:right-[-12px] sm:bottom-[-20px] sm:mt-0"
+            className="relative -mt-16 ml-auto w-[min(100%,330px)] sm:absolute sm:right-[-16px] sm:bottom-[-44px] sm:mt-0"
           />
         </div>
       </Container>

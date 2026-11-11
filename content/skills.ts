@@ -12,3 +12,6 @@ export const skillGroups: SkillGroup[] = [
   { title: "DevOps & Cloud", path: "/infra", items: ["[skill]", "[skill]", "[skill]"] },
   { title: "Tools", path: "/bin", items: ["[skill]", "[skill]", "[skill]"] },
 ];
+
+/** Labels floating around the 3D room (drei <Float>). */
+export const heroBadges: string[] = ["TS", "Go", "PG", "{ }"];
