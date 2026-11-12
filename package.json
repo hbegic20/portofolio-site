@@ -11,7 +11,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "optimize:glb": "gltf-transform optimize assets/room-raw.glb public/models/room.glb --compress draco --texture-compress webp --texture-size 2048 && ls -lh public/models/room.glb",
+    "gen:room": "node scripts/gen-room.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -40,6 +42,7 @@
     "zustand": "^5.1.0"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -49,6 +52,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "eslint-config-prettier": "^10.1.8",
+    "gltfjsx": "^6.5.3",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "4.3.3",
