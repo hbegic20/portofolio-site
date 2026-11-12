@@ -63,7 +63,7 @@ export function Loader({ mounting, progress, done }: LoaderProps) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <p className="mt-2 text-text-subtle">
+      <p className="mt-2 hidden text-text-subtle md:block">
         press <kbd className="rounded border border-border px-1">S</kbd> to skip 3D
       </p>
     </div>

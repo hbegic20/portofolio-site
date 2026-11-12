@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { CommandPalette } from "@/components/layout/CommandPalette";
 import { LenisProvider } from "@/components/layout/LenisProvider";
+import { LiteModeDetector } from "@/components/layout/LiteModeDetector";
 import { SkipToContent } from "@/components/layout/SkipToContent";
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SkipToContent />
         {children}
         <CommandPalette />
+        <LiteModeDetector />
         <LenisProvider />
       </body>
     </html>

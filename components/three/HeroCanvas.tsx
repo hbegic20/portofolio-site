@@ -2,10 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ROOM_ALT } from "@/lib/detectLiteMode";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useIdleMount } from "@/lib/useIdleMount";
 import { useUIStore } from "@/store/ui";
 import { Loader } from "./Loader";
+import { RoomFallback } from "./RoomFallback";
 
 const Scene = dynamic(() => import("./Scene").then((m) => m.Scene), { ssr: false });
 
@@ -15,7 +17,8 @@ const Scene = dynamic(() => import("./Scene").then((m) => m.Scene), { ssr: false
  */
 export function HeroCanvas() {
   const isLiteMode = useUIStore((s) => s.isLiteMode);
-  const mounting = useIdleMount(!isLiteMode);
+  const liteResolved = useUIStore((s) => s.liteResolved);
+  const mounting = useIdleMount(liteResolved && !isLiteMode);
   const [ready, setReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [onScreen, setOnScreen] = useState(true);
@@ -62,18 +65,15 @@ export function HeroCanvas() {
   );
 
   return (
-    <div
-      ref={wrap}
-      role="img"
-      aria-label="3D model of a cosy developer room with a desk, monitor and server rack"
-      className="relative isolate aspect-[4/3.4] w-full"
-    >
+    <div ref={wrap} className="relative isolate aspect-[4/3.4] w-full">
       {isLiteMode ? (
-        <div className="flex h-full items-center justify-center rounded-card border border-dashed border-border-strong bg-surface-sunk p-6 text-center font-mono text-xs text-text-subtle">
-          {"// 3D is off (lite mode) — ⌘K → Turn 3D on"}
-        </div>
+        <RoomFallback />
       ) : (
-        <>
+        <div
+          role="img"
+          aria-label={`3D model: ${ROOM_ALT.toLowerCase()}`}
+          className="absolute inset-0"
+        >
           {mounting && (
             <Scene
               active={onScreen}
@@ -84,7 +84,7 @@ export function HeroCanvas() {
             />
           )}
           <Loader mounting={mounting} progress={progress} done={ready} />
-        </>
+        </div>
       )}
     </div>
   );

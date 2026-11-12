@@ -3,6 +3,7 @@
 import { PresentationControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useRef, type RefObject } from "react";
+import { REDUCED_MOTION } from "@/lib/detectLiteMode";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { useThemeColors } from "@/lib/useThemeColors";
 import { CAMERA_BASE, CameraRig, type CameraRigHandle } from "./CameraRig";
@@ -25,7 +26,7 @@ type SceneProps = {
 export function Scene({ active, scrollProgress, onReady, onProgress, portal }: SceneProps) {
   const colors = useThemeColors();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const reducedMotion = useMediaQuery(REDUCED_MOTION);
   const rig = useRef<CameraRigHandle>(null);
   const dive = () => rig.current?.dive();
 

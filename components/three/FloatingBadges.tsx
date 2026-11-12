@@ -3,6 +3,8 @@
 import { Float, Html } from "@react-three/drei";
 import type { RefObject } from "react";
 import { heroBadges } from "@/content/skills";
+import { REDUCED_MOTION } from "@/lib/detectLiteMode";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const spots: [number, number, number][] = [
   [-1.6, 1.55, -1.2],
@@ -13,13 +15,15 @@ const spots: [number, number, number][] = [
 
 /** Mono chips floating around the room; DOM so they use Geist Mono and stay crisp. */
 export function FloatingBadges({ portal }: { portal: RefObject<HTMLElement | null> }) {
+  const reducedMotion = useMediaQuery(REDUCED_MOTION);
+
   return (
     <>
       {heroBadges.slice(0, spots.length).map((label, i) => (
         <Float
           key={label}
           position={spots[i]}
-          speed={1.4 + i * 0.2}
+          speed={reducedMotion ? 0 : 1.4 + i * 0.2}
           rotationIntensity={0}
           floatIntensity={0.9}
         >

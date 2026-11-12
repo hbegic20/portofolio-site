@@ -3,6 +3,8 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { MeshStandardMaterial } from "three";
+import { REDUCED_MOTION } from "@/lib/detectLiteMode";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import type { ThemeColors } from "@/lib/useThemeColors";
 
 const LEDS = 8;
@@ -15,8 +17,10 @@ type ServerRackProps = {
 /** Rack with a vertical LED strip; LEDs blink by mutating emissiveIntensity (no React state). */
 export function ServerRack({ colors, position }: ServerRackProps) {
   const leds = useRef<(MeshStandardMaterial | null)[]>([]);
+  const reducedMotion = useMediaQuery(REDUCED_MOTION);
 
   useFrame(({ clock }) => {
+    if (reducedMotion) return;
     const t = clock.elapsedTime;
     leds.current.forEach((m, i) => {
       if (!m) return;

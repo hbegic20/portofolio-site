@@ -16,10 +16,12 @@ const duration = 0.9;
 export function RevealScope({ children }: { children: ReactNode }) {
   const scope = useRef<HTMLElement>(null);
   const isLiteMode = useUIStore((s) => s.isLiteMode);
+  const liteResolved = useUIStore((s) => s.liteResolved);
 
   useGSAP(
     () => {
-      if (isLiteMode) return;
+      // Wait for detection so lite visitors never see content hidden then snapped back.
+      if (!liteResolved || isLiteMode) return;
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -60,7 +62,7 @@ export function RevealScope({ children }: { children: ReactNode }) {
 
       return () => mm.revert();
     },
-    { scope, dependencies: [isLiteMode], revertOnUpdate: true },
+    { scope, dependencies: [isLiteMode, liteResolved], revertOnUpdate: true },
   );
 
   return (
