@@ -3,6 +3,9 @@ import { create } from "zustand";
 import type { LiteReason } from "@/lib/detectLiteMode";
 
 const PREF_KEY = "devroom:3d";
+const LOG_SIZE = 3;
+
+export type RequestLog = { line: string; ok: boolean; at: number };
 
 type UIState = {
   isLiteMode: boolean;
@@ -10,6 +13,8 @@ type UIState = {
   liteResolved: boolean;
   isPaletteOpen: boolean;
   lenis: Lenis | null;
+  requests: RequestLog[];
+  logRequest: (method: string, path: string, status: number, ms: number) => void;
   resolveLiteMode: (reason: LiteReason | null) => void;
   toggleLiteMode: () => void;
   setPaletteOpen: (open: boolean) => void;
@@ -37,6 +42,18 @@ export const useUIStore = create<UIState>()((set) => ({
   liteResolved: false,
   isPaletteOpen: false,
   lenis: null,
+  requests: [],
+  logRequest: (method, path, status, ms) =>
+    set((s) => ({
+      requests: [
+        ...s.requests,
+        {
+          line: `${method} ${path} ${status || "ERR"} in ${ms}ms`,
+          ok: status > 0 && status < 400,
+          at: performance.now(),
+        },
+      ].slice(-LOG_SIZE),
+    })),
   resolveLiteMode: (reason) =>
     set((s) =>
       s.liteReason === "manual"

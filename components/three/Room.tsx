@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type RefObject } from "react";
 import type { ThemeColors } from "@/lib/useThemeColors";
+import { Hotspot } from "./Hotspot";
 import { KitPiece, type Palette } from "./KitPiece";
 import { MonitorScreen } from "./MonitorScreen";
 import { ServerRack } from "./ServerRack";
@@ -9,6 +10,7 @@ import { ServerRack } from "./ServerRack";
 type RoomProps = {
   colors: ThemeColors;
   onMonitorClick: () => void;
+  portal: RefObject<HTMLElement | null>;
 };
 
 const TILES = [-2, 0, 2];
@@ -49,7 +51,7 @@ function palettes(c: ThemeColors) {
   return { furniture, wall, floor, monitor };
 }
 
-export function Room({ colors: c, onMonitorClick }: RoomProps) {
+export function Room({ colors: c, onMonitorClick, portal }: RoomProps) {
   const p = useMemo(() => palettes(c), [c]);
 
   return (
@@ -62,45 +64,63 @@ export function Room({ colors: c, onMonitorClick }: RoomProps) {
       {TILES.map((x) => (
         <KitPiece key={`b${x}`} part="wall" palette={p.wall} position={[x, 0, -3.05]} />
       ))}
-      {TILES.map((z) => (
+      {[-2, 2].map((z) => (
         <KitPiece
           key={`l${z}`}
-          part={z === 0 ? "wallWindow" : "wall"}
+          part="wall"
           palette={p.wall}
           position={[-3.05, 0, z]}
           rotation={Math.PI / 2}
         />
       ))}
+      <Hotspot section="contact" labelAt={[-2.85, 2.35, 0]} portal={portal} lift={false}>
+        <KitPiece
+          part="wallWindow"
+          palette={p.wall}
+          position={[-3.05, 0, 0]}
+          rotation={Math.PI / 2}
+        />
+      </Hotspot>
 
       <KitPiece part="rugRectangle" palette={p.furniture} position={[0.3, 0, -1.7]} />
       <KitPiece part="desk" palette={p.furniture} position={[0.2, 0, -2.6]} rotation={Math.PI} />
-      <KitPiece
-        part="computerScreen"
-        palette={p.monitor}
-        position={MONITOR}
-        rotation={Math.PI}
-        scale={MONITOR_SCALE}
-      />
-      <MonitorScreen
-        colors={c}
-        position={[MONITOR[0], DESK_TOP + SCREEN.centerY, MONITOR[2] + SCREEN.front]}
-        width={SCREEN.width}
-        height={SCREEN.height}
-        tilt={SCREEN.tilt}
-        onClick={onMonitorClick}
-      />
+      <Hotspot
+        section="about"
+        labelAt={[MONITOR[0], DESK_TOP + SCREEN.centerY + 0.6, MONITOR[2]]}
+        portal={portal}
+        onSelect={onMonitorClick}
+      >
+        <KitPiece
+          part="computerScreen"
+          palette={p.monitor}
+          position={MONITOR}
+          rotation={Math.PI}
+          scale={MONITOR_SCALE}
+        />
+        <MonitorScreen
+          colors={c}
+          position={[MONITOR[0], DESK_TOP + SCREEN.centerY, MONITOR[2] + SCREEN.front]}
+          width={SCREEN.width}
+          height={SCREEN.height}
+          tilt={SCREEN.tilt}
+        />
+      </Hotspot>
       <KitPiece part="computerKeyboard" palette={p.furniture} position={[0.2, DESK_TOP, -2.38]} />
       <KitPiece part="computerMouse" palette={p.furniture} position={[0.68, DESK_TOP, -2.38]} />
       <KitPiece part="lampSquareTable" palette={p.furniture} position={[0.78, DESK_TOP, -2.8]} />
       <KitPiece part="books" palette={p.furniture} position={[-0.32, DESK_TOP, -2.82]} />
       <KitPiece part="chairDesk" palette={p.furniture} position={[0.2, 0, -1.85]} />
 
-      <ServerRack colors={c} position={[-2.4, 0, -2.4]} />
+      <Hotspot section="api" labelAt={[-2.4, 2.2, -2.4]} portal={portal}>
+        <ServerRack colors={c} position={[-2.4, 0, -2.4]} />
+      </Hotspot>
       <KitPiece part="speakerSmall" palette={p.furniture} position={[-1.55, 0, -2.78]} />
 
-      <KitPiece part="bookcaseOpen" palette={p.furniture} position={[2.1, 0, -2.75]} />
-      <KitPiece part="plantSmall1" palette={p.furniture} position={[2.1, 1.76, -2.75]} />
-      <KitPiece part="books" palette={p.furniture} position={[2.1, 0.45, -2.75]} />
+      <Hotspot section="experience" labelAt={[2.1, 2.35, -2.75]} portal={portal}>
+        <KitPiece part="bookcaseOpen" palette={p.furniture} position={[2.1, 0, -2.75]} />
+        <KitPiece part="plantSmall1" palette={p.furniture} position={[2.1, 1.76, -2.75]} />
+        <KitPiece part="books" palette={p.furniture} position={[2.1, 0.45, -2.75]} />
+      </Hotspot>
       <KitPiece part="pottedPlant" palette={p.furniture} position={[2.45, 0, -1.4]} />
       <KitPiece
         part="cardboardBoxClosed"
@@ -110,18 +130,20 @@ export function Room({ colors: c, onMonitorClick }: RoomProps) {
       />
       <pointLight position={[0.78, 1.25, -2.55]} intensity={1.2} distance={2.2} color="#ffb85c" />
 
-      <mesh position={[-1.0, 1.85, -2.99]}>
-        <boxGeometry args={[0.7, 0.9, 0.02]} />
-        <meshStandardMaterial color={c["surface-sunk"]} roughness={0.8} />
-      </mesh>
-      <mesh position={[-1.0, 2.05, -2.975]}>
-        <boxGeometry args={[0.44, 0.04, 0.01]} />
-        <meshStandardMaterial color={c.accent} emissive={c.accent} emissiveIntensity={0.6} />
-      </mesh>
-      <mesh position={[-1.06, 1.94, -2.975]}>
-        <boxGeometry args={[0.32, 0.04, 0.01]} />
-        <meshStandardMaterial color={c["text-subtle"]} />
-      </mesh>
+      <Hotspot section="projects" labelAt={[-1.0, 2.55, -2.9]} portal={portal}>
+        <mesh position={[-1.0, 1.85, -2.99]}>
+          <boxGeometry args={[0.7, 0.9, 0.02]} />
+          <meshStandardMaterial color={c["surface-sunk"]} roughness={0.8} />
+        </mesh>
+        <mesh position={[-1.0, 2.05, -2.975]}>
+          <boxGeometry args={[0.44, 0.04, 0.01]} />
+          <meshStandardMaterial color={c.accent} emissive={c.accent} emissiveIntensity={0.6} />
+        </mesh>
+        <mesh position={[-1.06, 1.94, -2.975]}>
+          <boxGeometry args={[0.32, 0.04, 0.01]} />
+          <meshStandardMaterial color={c["text-subtle"]} />
+        </mesh>
+      </Hotspot>
     </group>
   );
 }

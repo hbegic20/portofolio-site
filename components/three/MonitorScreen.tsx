@@ -5,14 +5,29 @@ import { useEffect, useMemo, useRef } from "react";
 import { CanvasTexture, SRGBColorSpace } from "three";
 import type { TerminalLine } from "@/components/ui/Terminal";
 import type { ThemeColors } from "@/lib/useThemeColors";
+import { useUIStore, type RequestLog } from "@/store/ui";
 
-const lines: TerminalLine[] = [
+const boot: TerminalLine[] = [
   { kind: "cmd", text: "pnpm dev" },
   { kind: "out", text: "▲ ready on http://localhost:3000", tone: "ok" },
+];
+
+const idle: TerminalLine[] = [
   { kind: "out", text: "GET /api/v1/me 200 in 9ms", tone: "muted" },
   { kind: "out", text: "GET /api/projects 200 in 14ms", tone: "muted" },
   { kind: "out", text: "POST /api/v1/contact 201 in 41ms", tone: "muted" },
 ];
+
+function linesFor(requests: RequestLog[]): TerminalLine[] {
+  if (requests.length === 0) return [...boot, ...idle];
+  return [
+    ...boot,
+    ...requests.map((r, i): TerminalLine => {
+      const latest = i === requests.length - 1;
+      return { kind: "out", text: r.line, tone: latest ? (r.ok ? "ok" : "err") : "muted" };
+    }),
+  ];
+}
 
 const TEX_W = 1024;
 const PAD = 44;
@@ -27,7 +42,6 @@ type MonitorScreenProps = {
   width: number;
   height: number;
   tilt?: number;
-  onClick: () => void;
 };
 
 function monoFamily(): string {
@@ -35,7 +49,12 @@ function monoFamily(): string {
   return family.trim() || "ui-monospace, monospace";
 }
 
-function draw(ctx: CanvasRenderingContext2D, c: ThemeColors, cursorOn: boolean) {
+function draw(
+  ctx: CanvasRenderingContext2D,
+  c: ThemeColors,
+  lines: TerminalLine[],
+  cursorOn: boolean,
+) {
   const { width: w, height: h } = ctx.canvas;
   const font = monoFamily();
   const tones = { ok: c.ok, err: c.err, muted: c["text-subtle"] } as const;
@@ -91,29 +110,29 @@ function createScreen(width: number, height: number, colors: ThemeColors) {
 
   return {
     texture,
-    render(cursorOn: boolean) {
+    render(lines: TerminalLine[], cursorOn: boolean) {
       if (!ctx) return;
-      draw(ctx, colors, cursorOn);
+      draw(ctx, colors, lines, cursorOn);
       texture.needsUpdate = true;
     },
     dispose: () => texture.dispose(),
   };
 }
 
-export function MonitorScreen({
-  colors,
-  position,
-  width,
-  height,
-  tilt = 0,
-  onClick,
-}: MonitorScreenProps) {
+export function MonitorScreen({ colors, position, width, height, tilt = 0 }: MonitorScreenProps) {
   const cursor = useRef(true);
+  const requests = useUIStore((s) => s.requests);
+  const lines = useMemo(() => linesFor(requests), [requests]);
+  const linesRef = useRef(lines);
   const screen = useMemo(() => createScreen(width, height, colors), [width, height, colors]);
 
   useEffect(() => {
-    screen.render(cursor.current);
-    document.fonts.ready.then(() => screen.render(cursor.current));
+    linesRef.current = lines;
+    screen.render(lines, cursor.current);
+  }, [screen, lines]);
+
+  useEffect(() => {
+    document.fonts.ready.then(() => screen.render(linesRef.current, cursor.current));
     return screen.dispose;
   }, [screen]);
 
@@ -121,20 +140,11 @@ export function MonitorScreen({
     const on = Math.floor(clock.elapsedTime / BLINK) % 2 === 0;
     if (on === cursor.current) return;
     cursor.current = on;
-    screen.render(on);
+    screen.render(linesRef.current, on);
   });
 
   return (
-    <mesh
-      position={position}
-      rotation={[tilt, 0, 0]}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-      onPointerOver={() => (document.body.style.cursor = "pointer")}
-      onPointerOut={() => (document.body.style.cursor = "")}
-    >
+    <mesh position={position} rotation={[tilt, 0, 0]}>
       <planeGeometry args={[width, height]} />
       <meshBasicMaterial map={screen.texture} toneMapped={false} />
     </mesh>

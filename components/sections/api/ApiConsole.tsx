@@ -3,6 +3,7 @@
 import { CornerDownLeft, LoaderCircle } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils";
+import { useUIStore } from "@/store/ui";
 import { JsonView } from "./JsonView";
 
 type Result =
@@ -24,6 +25,7 @@ const DEFAULT_PATH = "/api/v1/me";
 export function ApiConsole() {
   const [path, setPath] = useState(DEFAULT_PATH);
   const [result, setResult] = useState<Result>({ kind: "idle" });
+  const logRequest = useUIStore((s) => s.logRequest);
 
   async function send(e: FormEvent) {
     e.preventDefault();
@@ -48,16 +50,19 @@ export function ApiConsole() {
       } else {
         body = raw.length > 400 ? `${raw.slice(0, 400)}…` : raw;
       }
+      const ms = Math.round(performance.now() - start);
+      logRequest("GET", target, res.status, ms);
       setResult({
         kind: "done",
         status: res.status,
         statusText: res.statusText,
-        ms: Math.round(performance.now() - start),
+        ms,
         type: type.split(";")[0] || "unknown",
         body,
         json,
       });
     } catch (err) {
+      logRequest("GET", target, 0, Math.round(performance.now() - start));
       setResult({ kind: "error", message: err instanceof Error ? err.message : "network error" });
     }
   }

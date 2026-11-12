@@ -6,22 +6,11 @@ import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { Container } from "@/components/ui/Container";
 import { Terminal, type TerminalLine } from "@/components/ui/Terminal";
 
-const stackJson = [
-  "{",
-  ...skillGroups
-    .slice(0, 3)
-    .map(
-      (g, i, all) =>
-        `  "${g.path.slice(1)}": ${JSON.stringify(g.items.slice(0, 2))}${i < all.length - 1 ? "," : ""}`,
-    ),
-  "}",
-].join("\n");
-
 const lines: TerminalLine[] = [
   { kind: "cmd", text: "whoami" },
   { kind: "out", text: `${profile.name} — ${profile.role.toLowerCase()}` },
-  { kind: "cmd", text: "cat stack.json" },
-  { kind: "out", text: stackJson },
+  { kind: "cmd", text: "ls ~/stack" },
+  { kind: "out", text: skillGroups.map((g) => `${g.path.slice(1)}/`).join("  "), tone: "ok" },
 ];
 
 export function Hero() {
@@ -66,11 +55,7 @@ export function Hero() {
 
         <div className="relative min-w-0">
           <HeroCanvas mobileHint={mobileHint} />
-          <Terminal
-            title="~/zsh"
-            lines={lines}
-            className="absolute bottom-[-44px] left-[-16px] hidden w-[330px] md:block"
-          />
+          <Terminal title="~/zsh" lines={lines} className="mt-4 hidden md:block" />
         </div>
       </Container>
     </section>

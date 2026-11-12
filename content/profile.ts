@@ -43,8 +43,8 @@ export const profile: Profile = {
   hero: {
     headline: { before: "I build the ", accent: "whole stack", after: " — and make it feel fast." },
     intro: "[One-line intro: what you build, for whom, and what you care about.]",
-    hint: "drag the room to orbit · click the monitor to enter the terminal",
-    mobileHint: "tap the monitor to enter the terminal",
+    hint: "drag the room to orbit · click the monitor, shelf, rack, poster or window",
+    mobileHint: "tap the monitor, shelf, rack, poster or window to explore",
   },
   about: {
     headline: "[About headline — one sentence about how you work.]",

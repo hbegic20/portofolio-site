@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { contactSchema, type ContactField, type ContactResponse } from "@/lib/validation";
+import { useUIStore } from "@/store/ui";
 import { Field } from "./Field";
 
 type Status =
@@ -17,6 +18,7 @@ type FieldErrors = Partial<Record<ContactField, string[]>>;
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const logRequest = useUIStore((s) => s.logRequest);
   const [errors, setErrors] = useState<FieldErrors>({});
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -37,12 +39,14 @@ export function ContactForm() {
 
     setErrors({});
     setStatus({ kind: "sending" });
+    const start = performance.now();
     try {
       const res = await fetch("/api/v1/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
+      logRequest("POST", "/api/v1/contact", res.status, Math.round(performance.now() - start));
       const data = (await res.json()) as ContactResponse;
       if (data.ok) {
         setStatus({ kind: "ok", name: parsed.data.name });
@@ -52,6 +56,7 @@ export function ContactForm() {
         setStatus({ kind: "error", message: `${res.status} ${data.error}` });
       }
     } catch {
+      logRequest("POST", "/api/v1/contact", 0, Math.round(performance.now() - start));
       setStatus({ kind: "error", message: "network error — check your connection and retry" });
     }
   }

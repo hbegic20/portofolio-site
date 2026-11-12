@@ -29,7 +29,7 @@ export function Scene({ active, scrollProgress, onReady, onProgress, portal }: S
   const dive = () => rig.current?.dive();
   const framing = isMobile ? FRAMING.mobile : FRAMING.desktop;
 
-  const room = <Room colors={colors} onMonitorClick={dive} />;
+  const room = <Room colors={colors} onMonitorClick={dive} portal={portal} />;
 
   return (
     <Canvas
