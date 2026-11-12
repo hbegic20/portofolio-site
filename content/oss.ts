@@ -6,28 +6,31 @@ export type PinnedRepo = {
   href: string;
 };
 
-export const githubLogin = "[your-handle]";
+export const githubLogin = "hbegic20";
 
 export const pinnedRepos: PinnedRepo[] = [
   {
-    name: "[repo-name]",
-    description: "[What it does.]",
-    language: "[Lang]",
-    stars: "[—]",
-    href: "#",
+    name: "avlija",
+    description:
+      "Real estate listings for Bugojno and Srednjobosanski kanton — Next.js 16, Tailwind v4, Supabase.",
+    language: "TypeScript",
+    stars: "0",
+    href: "https://github.com/hbegic20/avlija",
   },
   {
-    name: "[repo-name]",
-    description: "[What it does.]",
-    language: "[Lang]",
-    stars: "[—]",
-    href: "#",
+    name: "tabla-app",
+    description:
+      "Two-sided learning app with an AI tutor, flashcards and quizzes — React + Vite on Supabase.",
+    language: "TypeScript",
+    stars: "0",
+    href: "https://github.com/hbegic20/tabla-app",
   },
   {
-    name: "[repo-name]",
-    description: "[What it does.]",
-    language: "[Lang]",
-    stars: "[—]",
-    href: "#",
+    name: "marketplace-agent",
+    description:
+      "NestJS + Prisma API behind an AI-powered local services marketplace, with public and admin search.",
+    language: "TypeScript",
+    stars: "0",
+    href: "https://github.com/hbegic20/marketplace-agent",
   },
 ];

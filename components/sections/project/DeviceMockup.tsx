@@ -29,7 +29,9 @@ function Screen({ media, name, sizes }: { media: Project["media"]; name: string;
       />
     );
   }
-  return <Image src={media.src} alt={media.alt} fill sizes={sizes} className="object-cover" />;
+  return (
+    <Image src={media.src} alt={media.alt} fill sizes={sizes} className="object-cover object-top" />
+  );
 }
 
 export function DeviceMockup({ media, name, flip }: DeviceMockupProps) {
@@ -57,7 +59,11 @@ export function DeviceMockup({ media, name, flip }: DeviceMockupProps) {
         )}
       >
         <div className="relative aspect-[9/19] overflow-hidden rounded-[13px] bg-surface-sunk">
-          <Screen media={media} name="mobile" sizes="160px" />
+          <Screen
+            media={media?.mobileSrc ? { ...media, src: media.mobileSrc } : media}
+            name="mobile"
+            sizes="160px"
+          />
         </div>
       </div>
     </div>

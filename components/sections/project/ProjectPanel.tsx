@@ -24,6 +24,15 @@ type ProjectPanelProps = {
   panel: PanelKey;
 };
 
+export function panelsFor(project: Project) {
+  return panels.filter(
+    (p) =>
+      (p.key !== "architecture" || project.architecture) &&
+      (p.key !== "code" || project.code) &&
+      (p.key !== "results" || project.results),
+  );
+}
+
 export function ProjectPanel({ project, panel }: ProjectPanelProps) {
   switch (panel) {
     case "overview":
@@ -35,6 +44,7 @@ export function ProjectPanel({ project, panel }: ProjectPanelProps) {
         </div>
       );
     case "architecture":
+      if (!project.architecture) return null;
       return (
         <div className="flex flex-col gap-5">
           <ArchitectureFlow nodes={project.architecture.nodes} />
@@ -42,6 +52,7 @@ export function ProjectPanel({ project, panel }: ProjectPanelProps) {
         </div>
       );
     case "code":
+      if (!project.code) return null;
       return (
         <CodeBlock
           filename={project.code.filename}
@@ -50,6 +61,7 @@ export function ProjectPanel({ project, panel }: ProjectPanelProps) {
         />
       );
     case "results":
+      if (!project.results) return null;
       return (
         <div className="flex flex-col gap-5">
           <dl className="grid grid-cols-3 gap-3">

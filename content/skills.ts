@@ -5,11 +5,31 @@ export type SkillGroup = {
 };
 
 export const skillGroups: SkillGroup[] = [
-  { title: "Frontend", path: "/web", items: ["[skill]", "[skill]", "[skill]", "[skill]"] },
-  { title: "Backend", path: "/api", items: ["[skill]", "[skill]", "[skill]", "[skill]"] },
-  { title: "Data", path: "/db", items: ["[skill]", "[skill]", "[skill]"] },
-  { title: "DevOps & Cloud", path: "/infra", items: ["[skill]", "[skill]", "[skill]"] },
-  { title: "Tools", path: "/bin", items: ["[skill]", "[skill]", "[skill]"] },
+  {
+    title: "Languages",
+    path: "/lang",
+    items: ["JavaScript", "TypeScript", "PHP", "HTML5", "CSS3", "SCSS"],
+  },
+  {
+    title: "Frameworks",
+    path: "/web",
+    items: ["React", "Next.js", "Vue.js", "Nuxt.js", "Laravel"],
+  },
+  {
+    title: "Styling & UI",
+    path: "/ui",
+    items: ["Tailwind CSS", "BEM", "Atomic Design", "Responsive design", "Cross-browser"],
+  },
+  {
+    title: "Templating & tools",
+    path: "/bin",
+    items: ["Blade", "Twig", "Mustache", "Fractal", "Figma", "Git", "REST APIs"],
+  },
+  {
+    title: "Practices",
+    path: "/practice",
+    items: ["Web performance", "Testing", "Code review", "Agile / Scrum"],
+  },
 ];
 
-export const heroBadges: string[] = ["TS", "Go", "PG", "{ }"];
+export const heroBadges: string[] = ["TS", "React", "Vue", "{ }"];

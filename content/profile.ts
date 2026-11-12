@@ -31,31 +31,32 @@ export type Profile = {
 };
 
 export const profile: Profile = {
-  name: "[Name]",
-  handle: "[name]",
-  role: "Full-stack engineer",
+  name: "Haris Begić",
+  handle: "haris",
+  role: "Frontend developer → full-stack",
   available: true,
-  status: "open to full-time & freelance",
-  location: "[City, Country]",
-  timezone: "[UTC±X]",
-  yearsShipping: "[X]",
-  email: "[you@example.com]",
+  status: "open to remote work",
+  location: "Bugojno, Bosnia and Herzegovina",
+  timezone: "UTC+1",
+  yearsShipping: "8+",
+  email: "harisbegic38@gmail.com",
   hero: {
-    headline: { before: "I build the ", accent: "whole stack", after: " — and make it feel fast." },
-    intro: "[One-line intro: what you build, for whom, and what you care about.]",
+    headline: { before: "Fast frontends today — the ", accent: "whole stack", after: " next." },
+    intro:
+      "Frontend developer with 8+ years building fast, user-friendly web apps for international clients — now growing into the backend.",
     hint: "drag the room to orbit · click the monitor, shelf, rack, poster or window",
     mobileHint: "tap the monitor, shelf, rack, poster or window to explore",
   },
   about: {
-    headline: "[About headline — one sentence about how you work.]",
-    bio: "[2–3 sentence bio. Where you've worked, what you're best at, what you enjoy shipping.]",
+    headline: "I care about web performance, clean code and interfaces people enjoy using.",
+    bio: "I hold a BTech in Information Technology (Univerzitet \"Vitez\", 2015–2019) and have been building websites and web applications since 2018 — first for local businesses and institutions at MTH IT Solutions, and since 2021 for international products, including five years at Bragg Gaming (iGaming) and client work at Indevitus. I work closely with backend developers, QA and designers, and I'm now extending into the backend myself: this site's API, database and email are my own.",
     facts: [
-      { label: "Focus", value: "[e.g. product engineering, APIs, performance]" },
-      { label: "Looking for", value: "[e.g. full-time senior role or freelance projects]" },
-      { label: "Languages", value: "[e.g. English, …]" },
+      { label: "Focus", value: "Web performance, maintainable code and good UX" },
+      { label: "Looking for", value: "Remote frontend or full-stack roles" },
+      { label: "Languages", value: "Bosnian (native), English" },
     ],
   },
-  currentlyLearning: "[topic], [topic]",
+  currentlyLearning: "Next.js route handlers, PostgreSQL + Drizzle, Redis",
   cvUrl: "/cv.pdf",
   bookCallUrl: "[https://cal.com/your-handle]",
 };

@@ -5,7 +5,7 @@ import { Chip } from "@/components/ui/Chip";
 import { Tabs } from "@/components/ui/Tabs";
 import { cn } from "@/lib/utils";
 import { DeviceMockup } from "./project/DeviceMockup";
-import { ProjectPanel, panels } from "./project/ProjectPanel";
+import { ProjectPanel, panelsFor } from "./project/ProjectPanel";
 
 type ProjectBlockProps = {
   project: Project;
@@ -18,6 +18,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export function ProjectBlock({ project, index, total }: ProjectBlockProps) {
   const flip = index % 2 === 1;
   const headingId = `project-${project.slug}`;
+
+  const visiblePanels = panelsFor(project);
 
   return (
     <article
@@ -62,14 +64,18 @@ export function ProjectBlock({ project, index, total }: ProjectBlockProps) {
           ))}
         </ul>
 
-        <Tabs
-          label={`${project.name} details`}
-          items={panels.map((p) => ({
-            id: p.key,
-            label: p.label,
-            content: <ProjectPanel project={project} panel={p.key} />,
-          }))}
-        />
+        {visiblePanels.length > 1 ? (
+          <Tabs
+            label={`${project.name} details`}
+            items={visiblePanels.map((p) => ({
+              id: p.key,
+              label: p.label,
+              content: <ProjectPanel project={project} panel={p.key} />,
+            }))}
+          />
+        ) : (
+          <ProjectPanel project={project} panel="overview" />
+        )}
 
         <div className="flex flex-wrap gap-3">
           {project.links.demo && (
