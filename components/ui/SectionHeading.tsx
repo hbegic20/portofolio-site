@@ -4,12 +4,10 @@ import { cn } from "@/lib/utils";
 
 type SectionHeadingProps = {
   section: Section;
-  /** Overrides `section.title` (e.g. About uses the profile headline). */
   title?: ReactNode;
   className?: string;
 };
 
-/** Command-style titles (`git log --author=me`) must not wrap at a hyphen. */
 function NoBreakWords({ text }: { text: string }) {
   return text.split(" ").map((word, i) => (
     <Fragment key={i}>
@@ -31,7 +29,6 @@ export function SectionHeading({ section, title, className }: SectionHeadingProp
         id={`${section.id}-heading`}
         className="text-h2 leading-[1.05] font-semibold tracking-heading text-balance"
       >
-        {/* Mask: the inner span slides up from below the clipped edge. */}
         <span className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
           <span data-reveal="heading" className="block">
             {title ?? <NoBreakWords text={section.title ?? ""} />}

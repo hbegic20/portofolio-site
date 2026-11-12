@@ -8,7 +8,6 @@ import { scrollToId } from "@/lib/scroll";
 
 export const CAMERA_BASE = new Vector3(6.4, 3.7, 7.0);
 const LOOK_AT = new Vector3(-0.25, 0.2, -1.1);
-// Just in front of the monitor screen (Room is offset by y −1.1).
 const SCREEN = new Vector3(0.2, 0.42, -2.72);
 const PARALLAX = 0.3;
 const DOLLY = 1.6;
@@ -17,12 +16,10 @@ export type CameraRigHandle = { dive: () => void };
 
 type CameraRigProps = {
   ref?: Ref<CameraRigHandle>;
-  /** 0 → 1 as the hero scrolls out (written by ScrollTrigger in HeroCanvas). */
   scrollProgress: RefObject<number>;
   reducedMotion: boolean;
 };
 
-/** Pointer parallax + scroll dolly; dive() flies into the monitor, then scrolls to #about. */
 export function CameraRig({ ref, scrollProgress, reducedMotion }: CameraRigProps) {
   const { camera } = useThree();
   const diving = useRef(false);
@@ -38,7 +35,6 @@ export function CameraRig({ ref, scrollProgress, reducedMotion }: CameraRigProps
         defaults: { duration: 1.1, ease: "power3.inOut" },
         onComplete: () => {
           scrollToId("about");
-          // Let the lerp ease the camera home once the hero is off-screen.
           setTimeout(() => (diving.current = false), 900);
         },
       });

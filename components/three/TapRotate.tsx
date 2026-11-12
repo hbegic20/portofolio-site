@@ -6,7 +6,6 @@ import type { Group } from "three";
 
 const STOPS = [0, 0.45, 0, -0.45];
 
-/** Mobile replacement for drag-to-orbit: each tap turns the room to the next angle. */
 export function TapRotate({ children }: { children: ReactNode }) {
   const group = useRef<Group>(null);
   const step = useRef(0);

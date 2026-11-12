@@ -1,6 +1,5 @@
 export type SkillGroup = {
   title: string;
-  /** Path-style label, e.g. "/web". */
   path: string;
   items: string[];
 };
@@ -13,5 +12,4 @@ export const skillGroups: SkillGroup[] = [
   { title: "Tools", path: "/bin", items: ["[skill]", "[skill]", "[skill]"] },
 ];
 
-/** Labels floating around the 3D room (drei <Float>). */
 export const heroBadges: string[] = ["TS", "Go", "PG", "{ }"];

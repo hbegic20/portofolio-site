@@ -55,7 +55,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Analytics />
         <script
           type="application/ld+json"
-          // Static object from content/ — escape "<" so it can never close the script tag.
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
           }}

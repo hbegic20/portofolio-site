@@ -6,7 +6,6 @@ export type TerminalLine =
 type TerminalProps = {
   title: string;
   lines: TerminalLine[];
-  /** Show a blinking cursor on a final empty prompt. */
   cursor?: boolean;
   className?: string;
 };

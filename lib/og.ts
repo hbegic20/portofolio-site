@@ -1,10 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-/**
- * Satori (next/og) can't read CSS variables, so the generated images use this mirror of
- * the @theme tokens in app/globals.css — keep the two in sync when changing the accent.
- */
 export const ogColors = {
   bg: "#0A0E1A",
   surface: "#0E1426",

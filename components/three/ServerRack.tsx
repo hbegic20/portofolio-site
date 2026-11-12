@@ -14,7 +14,6 @@ type ServerRackProps = {
   position: [number, number, number];
 };
 
-/** Rack with a vertical LED strip; LEDs blink by mutating emissiveIntensity (no React state). */
 export function ServerRack({ colors, position }: ServerRackProps) {
   const leds = useRef<(MeshStandardMaterial | null)[]>([]);
   const reducedMotion = useMediaQuery(REDUCED_MOTION);
@@ -35,7 +34,6 @@ export function ServerRack({ colors, position }: ServerRackProps) {
         <boxGeometry args={[0.8, 1.9, 0.9]} />
         <meshStandardMaterial color={colors["surface-sunk"]} roughness={0.7} />
       </mesh>
-      {/* server units */}
       {[0.35, 0.75, 1.15, 1.55].map((y) => (
         <mesh key={y} position={[0, y, 0.452]}>
           <boxGeometry args={[0.66, 0.3, 0.01]} />

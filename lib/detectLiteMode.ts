@@ -16,7 +16,6 @@ function hasWebGL2(): boolean {
   }
 }
 
-/** First reason this device should get the static room instead of WebGL, or null. */
 export function detectLiteMode(): LiteReason | null {
   const nav = navigator as NavigatorWithConnection;
   if (window.matchMedia(REDUCED_MOTION).matches) return "reduced-motion";

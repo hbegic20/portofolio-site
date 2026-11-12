@@ -6,7 +6,6 @@ type CodeBlockProps = {
   lang: string;
 };
 
-/** Server component: Shiki output is static HTML, no client JS. */
 export async function CodeBlock({ filename, code, lang }: CodeBlockProps) {
   const html = await highlight(code, lang);
 

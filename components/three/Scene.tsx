@@ -14,12 +14,10 @@ import { ProgressReporter } from "./ProgressReporter";
 import { TapRotate } from "./TapRotate";
 
 type SceneProps = {
-  /** false while the hero is off-screen → rendering pauses. */
   active: boolean;
   scrollProgress: RefObject<number>;
   onReady: () => void;
   onProgress: (p: number) => void;
-  /** Stable DOM parent for drei <Html> (avoids its root being re-created after mount). */
   portal: RefObject<HTMLElement | null>;
 };
 

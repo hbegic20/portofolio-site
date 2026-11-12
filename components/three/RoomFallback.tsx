@@ -5,7 +5,6 @@ import { liteReasonLabel, ROOM_ALT } from "@/lib/detectLiteMode";
 import { useUIStore } from "@/store/ui";
 import roomStill from "@/public/fallback/room.webp";
 
-/** Lite mode: pre-rendered still of the room plus a one-click way back to 3D. */
 export function RoomFallback() {
   const reason = useUIStore((s) => s.liteReason);
   const toggleLiteMode = useUIStore((s) => s.toggleLiteMode);

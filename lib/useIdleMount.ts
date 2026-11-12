@@ -2,10 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-/**
- * true once the browser is idle (requestIdleCallback, with a setTimeout fallback for
- * Safari) or the user first interacts — whichever comes first.
- */
 export function useIdleMount(enabled = true, timeout = 2000): boolean {
   const [ready, setReady] = useState(false);
 

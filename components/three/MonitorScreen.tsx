@@ -13,7 +13,6 @@ const lines: TerminalLine[] = [
   { kind: "out", text: "POST /api/v1/contact 201 in 41ms", tone: "muted" },
 ];
 
-// Screen is 1.28 × 0.72 world units; the DOM is laid out at 512 × 288 px.
 const PX_W = 512;
 const PX_H = 288;
 const SCREEN_W = 1.28;
@@ -28,7 +27,6 @@ type MonitorScreenProps = {
 export function MonitorScreen({ colors, position, onClick, portal }: MonitorScreenProps) {
   return (
     <group position={position}>
-      {/* Glow panel behind the DOM so bloom picks up the screen. */}
       <mesh
         onClick={(e) => {
           e.stopPropagation();
@@ -43,7 +41,6 @@ export function MonitorScreen({ colors, position, onClick, portal }: MonitorScre
           toneMapped={false}
         />
       </mesh>
-      {/* In transform mode 1 CSS px = distanceFactor / 400 units: 512px × (1 / 400) = 1.28 = screen width. */}
       <Html
         transform
         occlude

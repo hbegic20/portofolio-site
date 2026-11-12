@@ -13,7 +13,6 @@ const spots: [number, number, number][] = [
   [1.4, -0.35, 0.9],
 ];
 
-/** Mono chips floating around the room; DOM so they use Geist Mono and stay crisp. */
 export function FloatingBadges({ portal }: { portal: RefObject<HTMLElement | null> }) {
   const reducedMotion = useMediaQuery(REDUCED_MOTION);
 

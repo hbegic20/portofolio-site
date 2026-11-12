@@ -2,7 +2,6 @@
 
 import { useSyncExternalStore } from "react";
 
-/** Subscribes to a media query; returns `serverValue` during SSR. */
 export function useMediaQuery(query: string, serverValue = false): boolean {
   return useSyncExternalStore(
     (onChange) => {

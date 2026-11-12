@@ -2,7 +2,6 @@
 
 import { useUIStore } from "@/store/ui";
 
-/** Scroll to a section id, through Lenis when active, natively otherwise. */
 export function scrollToId(id: string) {
   const target = document.getElementById(id);
   if (!target) return;

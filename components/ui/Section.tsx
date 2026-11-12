@@ -5,7 +5,6 @@ import { Container } from "./Container";
 
 type SectionProps = {
   id: SectionId;
-  /** Alternating band background. */
   alt?: boolean;
   className?: string;
   children: ReactNode;

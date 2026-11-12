@@ -1,7 +1,5 @@
 import type { SVGProps } from "react";
 
-// Brand marks aren't in lucide; simple-icons paths, rendered with currentColor.
-
 export function GithubIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden width={18} height={18} {...props}>

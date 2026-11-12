@@ -32,7 +32,6 @@ export function CommandPalette() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [status, setStatus] = useState("");
 
-  // ⌘K / Ctrl+K toggles from anywhere.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
@@ -44,7 +43,6 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", onKey);
   }, [setOpen]);
 
-  // Sync store → native <dialog>, and freeze background scrolling while open.
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -117,7 +115,6 @@ export function CommandPalette() {
   ];
 
   const select = (item: Item) => {
-    // Restart Lenis before acting: start() resets it, which would cancel a scroll begun earlier.
     useUIStore.getState().lenis?.start();
     setOpen(false);
     item.run();

@@ -20,7 +20,6 @@ const tokens = [
 
 export type ThemeColors = Record<(typeof tokens)[number], string>;
 
-/** Reads the @theme colour tokens so the 3D scene uses the same palette as the page. */
 export function useThemeColors(): ThemeColors {
   return useMemo(() => {
     const css = getComputedStyle(document.documentElement);

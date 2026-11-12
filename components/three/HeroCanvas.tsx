@@ -11,10 +11,6 @@ import { RoomFallback } from "./RoomFallback";
 
 const Scene = dynamic(() => import("./Scene").then((m) => m.Scene), { ssr: false });
 
-/**
- * Hero 3D slot. The scene chunk (three, R3F, drei) only loads once the browser is idle,
- * renders only while on-screen, and fades/dollies out as the hero scrolls away.
- */
 export function HeroCanvas() {
   const isLiteMode = useUIStore((s) => s.isLiteMode);
   const liteResolved = useUIStore((s) => s.liteResolved);
@@ -27,7 +23,6 @@ export function HeroCanvas() {
 
   const onReady = useCallback(() => setReady(true), []);
 
-  // Re-show the loader when 3D is switched back on (adjust state during render, not in an effect).
   const [prevLite, setPrevLite] = useState(isLiteMode);
   if (prevLite !== isLiteMode) {
     setPrevLite(isLiteMode);

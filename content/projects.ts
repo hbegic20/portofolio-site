@@ -1,6 +1,5 @@
 export type ArchNode = {
   label: string;
-  /** Highlighted with the accent colour (usually the API). */
   highlight?: boolean;
 };
 
@@ -11,7 +10,6 @@ export type Metric = {
 
 export type Project = {
   slug: string;
-  /** Short commit-style hash shown in the label. */
   hash: string;
   name: string;
   oneLiner: string;

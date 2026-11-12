@@ -7,7 +7,6 @@ import { REDUCED_MOTION } from "@/lib/detectLiteMode";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useUIStore } from "@/store/ui";
 
-/** Smooth scroll driven by the GSAP ticker. Off in lite mode and for reduced motion. */
 export function LenisProvider() {
   const isLiteMode = useUIStore((s) => s.isLiteMode);
   const liteResolved = useUIStore((s) => s.liteResolved);

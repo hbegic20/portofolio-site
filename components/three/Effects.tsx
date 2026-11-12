@@ -2,7 +2,6 @@
 
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
-/** Bloom only, subtle: just the emissive LEDs, screen glow and window cross the threshold. */
 export function Effects() {
   return (
     <EffectComposer multisampling={0}>

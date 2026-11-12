@@ -64,7 +64,6 @@ export function ContactForm() {
       <Field name="email" label="--email" errors={errors.email} type="email" autoComplete="email" />
       <Field name="message" label="--message" errors={errors.message} multiline maxLength={4000} />
 
-      {/* Honeypot: hidden from people, tempting for bots. */}
       <div aria-hidden className="hidden">
         <label htmlFor="contact-company">Company</label>
         <input id="contact-company" name="company" tabIndex={-1} autoComplete="off" />

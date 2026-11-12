@@ -1,10 +1,8 @@
 import { Fragment, type ReactNode } from "react";
 
-// key | string | number | boolean/null — enough for pretty-printed JSON.
 const token =
   /("(?:\\.|[^"\\])*")(\s*:)?|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|\b(true|false|null)\b/g;
 
-/** Tiny JSON highlighter using the code tokens; no dependency, no innerHTML. */
 export function JsonView({ text }: { text: string }) {
   const parts: ReactNode[] = [];
   let last = 0;

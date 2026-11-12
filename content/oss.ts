@@ -6,7 +6,8 @@ export type PinnedRepo = {
   href: string;
 };
 
-/** Fallback pinned repos; replaced by GitHub GraphQL data once GITHUB_TOKEN is wired up. */
+export const githubLogin = "[your-handle]";
+
 export const pinnedRepos: PinnedRepo[] = [
   {
     name: "[repo-name]",

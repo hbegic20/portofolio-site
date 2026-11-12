@@ -6,7 +6,6 @@ import { HeroCanvas } from "@/components/three/HeroCanvas";
 import { Container } from "@/components/ui/Container";
 import { Terminal, type TerminalLine } from "@/components/ui/Terminal";
 
-// One line per group keeps the floating window short enough not to cover the room.
 const stackJson = [
   "{",
   ...skillGroups

@@ -12,18 +12,12 @@ export type TabItem = {
 
 type TabsProps = {
   items: TabItem[];
-  /** Accessible name for the tablist. */
   label: string;
   className?: string;
 };
 
-/**
- * WAI-ARIA Tabs with automatic activation: ←/→ move and select, Home/End jump.
- * All panels stay in the DOM (hidden) so their content is server-rendered and indexable.
- */
 export function Tabs({ items, label, className }: TabsProps) {
   const [active, setActiveState] = useState(items[0]?.id);
-  // First paint is static (SSR, no JS); only animate panels after the user switches.
   const [interacted, setInteracted] = useState(false);
   const setActive = (id: string) => {
     setInteracted(true);

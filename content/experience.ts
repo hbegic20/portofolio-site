@@ -3,7 +3,6 @@ export type Job = {
   role: string;
   company: string;
   start: string;
-  /** Omit for the current role. */
   end?: string;
   impact: string;
   stack: string[];

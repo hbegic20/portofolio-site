@@ -5,7 +5,6 @@ export type Fact = {
 
 export type Profile = {
   name: string;
-  /** Lowercase handle used in the nav prompt and `npx hire-<handle>`. */
   handle: string;
   role: string;
   available: boolean;
@@ -15,7 +14,6 @@ export type Profile = {
   yearsShipping: string;
   email: string;
   hero: {
-    /** Rendered as: before <accent>accent</accent> after */
     headline: { before: string; accent: string; after: string };
     intro: string;
     hint: string;
@@ -26,7 +24,6 @@ export type Profile = {
     facts: Fact[];
     photo?: { src: string; alt: string };
   };
-  /** Shown as `$ currently learning: …` under Skills. */
   currentlyLearning: string;
   cvUrl: string;
   bookCallUrl: string;

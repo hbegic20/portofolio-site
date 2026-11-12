@@ -8,12 +8,10 @@ export const alt = `${profile.name} — ${profile.role}. A 3D render of a cosy d
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Smaller JPEG copy of public/fallback/room.webp (Satori can't decode WebP).
 const room = await readFile(join(process.cwd(), "assets/og/room.jpg"));
 const roomSrc = `data:image/jpeg;base64,${room.toString("base64")}`;
 const fonts = await loadOgFonts();
 
-// Satori needs flex for mixed children, so the headline wraps word by word.
 const { before, accent, after } = profile.hero.headline;
 const split = (text: string, isAccent: boolean) =>
   text

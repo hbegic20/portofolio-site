@@ -6,7 +6,6 @@ type ArchitectureFlowProps = {
   nodes: ArchNode[];
 };
 
-/** Node flow, horizontal from sm up, vertical on phones; packets travel each link. */
 export function ArchitectureFlow({ nodes }: ArchitectureFlowProps) {
   return (
     <ol

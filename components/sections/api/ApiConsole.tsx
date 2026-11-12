@@ -44,9 +44,7 @@ export function ApiConsole() {
       if (json) {
         try {
           body = JSON.stringify(JSON.parse(raw), null, 2);
-        } catch {
-          // fall through with the raw text
-        }
+        } catch {}
       } else {
         body = raw.length > 400 ? `${raw.slice(0, 400)}…` : raw;
       }

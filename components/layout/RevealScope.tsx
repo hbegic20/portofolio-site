@@ -7,12 +7,6 @@ import { useUIStore } from "@/store/ui";
 const ease = "expo.out";
 const duration = 0.9;
 
-/**
- * Wraps <main> and animates everything marked with data-reveal:
- * - "heading": slides up out of its overflow-hidden parent (the mask)
- * - "item": fades in and rises 24px, batched with a 0.06s stagger
- * Skipped entirely in lite mode and for prefers-reduced-motion.
- */
 export function RevealScope({ children }: { children: ReactNode }) {
   const scope = useRef<HTMLElement>(null);
   const isLiteMode = useUIStore((s) => s.isLiteMode);
@@ -20,7 +14,6 @@ export function RevealScope({ children }: { children: ReactNode }) {
 
   useGSAP(
     () => {
-      // Wait for detection so lite visitors never see content hidden then snapped back.
       if (!liteResolved || isLiteMode) return;
       const mm = gsap.matchMedia();
 
@@ -35,14 +28,11 @@ export function RevealScope({ children }: { children: ReactNode }) {
         });
 
         const items = gsap.utils.toArray<HTMLElement>("[data-reveal=item]");
-        // opacity, not autoAlpha: visibility:hidden would make unrevealed links untabbable.
         gsap.set(items, { opacity: 0, y: 24 });
         ScrollTrigger.batch(items, {
           start: "top 90%",
           once: true,
           onEnter: (batch) => {
-            // A long jump (anchor, focus, deep link) enters everything skipped over in one
-            // batch; show those instantly so the stagger only runs on what's on screen.
             const passed = batch.filter((el) => el.getBoundingClientRect().bottom < 0);
             const visible = batch.filter((el) => !passed.includes(el));
             if (passed.length) gsap.set(passed, { opacity: 1, y: 0 });

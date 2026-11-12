@@ -3,17 +3,12 @@ export type SectionId =
 
 export type Section = {
   id: SectionId;
-  /** Code-comment label, e.g. "// 01 — about". Absent for the hero. */
   index?: string;
-  /** Short slug shown in the label and nav, e.g. "about". */
   slug: string;
-  /** Section H2 (the hero owns the page H1). */
   title?: string;
-  /** Show in the top nav as `./slug`. */
   inNav: boolean;
 };
 
-/** Page sections in render order. Used by page, nav and the ⌘K palette. */
 export const sections: readonly Section[] = [
   { id: "top", slug: "top", inNav: false },
   { id: "about", index: "01", slug: "about", inNav: true },

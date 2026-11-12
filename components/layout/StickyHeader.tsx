@@ -2,7 +2,6 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 
-/** Transparent at the top of the page; blurred surface once scrolled. */
 export function StickyHeader({ children }: { children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
 

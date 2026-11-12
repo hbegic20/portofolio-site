@@ -17,7 +17,6 @@ export async function POST(request: Request) {
     return reply({ ok: false, error: "invalid JSON body" }, 400);
   }
 
-  // Honeypot filled → pretend success so bots learn nothing.
   if (typeof body === "object" && body !== null && "company" in body && body.company) {
     return reply({ ok: true }, 201);
   }
@@ -41,7 +40,6 @@ export async function POST(request: Request) {
     }
   }
 
-  // In production at least one delivery channel must exist, or the message would vanish.
   if (!db && !emailEnabled && process.env.NODE_ENV === "production") {
     console.error("[contact] neither DATABASE_URL nor Resend is configured");
     return reply({ ok: false, error: "contact form is not configured yet" }, 503);
@@ -57,7 +55,6 @@ export async function POST(request: Request) {
   try {
     await sendContactEmail({ name, email, message });
   } catch (err) {
-    // Saved to the DB already; a failed notification shouldn't fail the request.
     console.error("[contact] email failed", err);
     if (!db) return reply({ ok: false, error: "couldn't deliver your message" }, 502);
   }

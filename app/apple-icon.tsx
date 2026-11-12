@@ -4,7 +4,6 @@ import { ogColors as c } from "@/lib/og";
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-/** Same prompt glyph as app/icon.svg, on a full-bleed square (iOS rounds the corners). */
 export default function AppleIcon() {
   return new ImageResponse(
     <div

@@ -2,7 +2,6 @@ import "server-only";
 import { cacheLife } from "next/cache";
 import { createHighlighter, type BundledLanguage, type ThemeRegistration } from "shiki";
 
-/** Colours are CSS variables, so code follows the @theme tokens in globals.css. */
 const theme: ThemeRegistration = {
   name: "dev-room",
   type: "dark",
@@ -81,7 +80,6 @@ function isCodeLang(lang: string): lang is CodeLang {
   return (langs as readonly string[]).includes(lang);
 }
 
-/** Highlights at build time; cached so each snippet is processed once. */
 export async function highlight(code: string, lang: string): Promise<string> {
   "use cache";
   cacheLife("max");

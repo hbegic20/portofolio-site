@@ -1,19 +1,29 @@
 import { ArrowUpRight, Star } from "lucide-react";
-import { pinnedRepos } from "@/content/oss";
+import { githubLogin, pinnedRepos } from "@/content/oss";
 import { getSection } from "@/content/sections";
 import { testimonials } from "@/content/testimonials";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { getGitHubActivity } from "@/lib/github";
+import { cn } from "@/lib/utils";
+import { ContributionGrid } from "./ContributionGrid";
 
-export function OpenSource() {
+export async function OpenSource() {
+  const github = await getGitHubActivity(githubLogin);
+  const repos = github?.pinned.length ? github.pinned : pinnedRepos;
+
   return (
     <Section id="oss">
       <SectionHeading section={getSection("oss")} />
-      {/* GitHub contribution grid (GraphQL, ISR) is added once GITHUB_TOKEN is set. */}
+      {github && (
+        <div data-reveal="item" className="mt-12">
+          <ContributionGrid total={github.total} weeks={github.weeks} />
+        </div>
+      )}
 
-      <ul className="mt-12 grid gap-4 md:grid-cols-3">
-        {pinnedRepos.map((repo, i) => (
+      <ul className={cn("grid gap-4 md:grid-cols-3", github ? "mt-4" : "mt-12")}>
+        {repos.map((repo, i) => (
           <li key={i} data-reveal="item">
             <Card className="group relative flex h-full flex-col gap-3 p-6 transition-colors hover:border-border-strong">
               <h3 className="flex items-center justify-between gap-2 font-mono text-sm">

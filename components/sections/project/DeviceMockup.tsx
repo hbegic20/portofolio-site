@@ -42,7 +42,6 @@ export function DeviceMockup({ media, name, flip }: DeviceMockupProps) {
           "rotate-x-[6deg]",
         )}
       >
-        {/* Laptop */}
         <div className="rounded-t-[14px] border border-border-strong bg-surface p-2.5">
           <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] bg-surface-sunk">
             <Screen media={media} name={name} sizes="(min-width: 1024px) 560px, 90vw" />
@@ -51,7 +50,6 @@ export function DeviceMockup({ media, name, flip }: DeviceMockupProps) {
         <div className="mx-[-4%] h-3 rounded-b-[10px] border border-t-0 border-border-strong bg-border" />
       </div>
 
-      {/* Phone */}
       <div
         className={cn(
           "absolute bottom-0 w-[22%] rounded-[18px] border border-border-strong bg-surface p-1.5 shadow-2xl shadow-black/50",

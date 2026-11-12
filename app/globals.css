@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Design tokens — single source of truth (see CLAUDE.md §4). Dark theme only. */
 @theme {
   --color-bg: #0a0e1a;
   --color-bg-alt: #0c1120;

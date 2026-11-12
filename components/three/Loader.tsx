@@ -5,11 +5,8 @@ import { cn } from "@/lib/utils";
 import { useUIStore } from "@/store/ui";
 
 type LoaderProps = {
-  /** Scene chunk requested (browser idle or first interaction). */
   mounting: boolean;
-  /** drei useProgress, 0–100. */
   progress: number;
-  /** First frame rendered. */
   done: boolean;
 };
 
@@ -22,7 +19,6 @@ function Line({ ok, children }: { ok: boolean; children: ReactNode }) {
   );
 }
 
-/** Terminal boot log over the canvas area only — page text is never blocked. */
 export function Loader({ mounting, progress, done }: LoaderProps) {
   const toggleLiteMode = useUIStore((s) => s.toggleLiteMode);
   const [gone, setGone] = useState(false);

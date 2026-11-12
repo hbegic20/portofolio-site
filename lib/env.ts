@@ -1,7 +1,6 @@
 import "server-only";
 import { z } from "zod";
 
-// Empty strings (copied straight from .env.example) count as "not set".
 const optional = z.preprocess((v) => (v === "" ? undefined : v), z.string().min(1).optional());
 
 const schema = z.object({
@@ -14,5 +13,4 @@ const schema = z.object({
   GITHUB_TOKEN: optional,
 });
 
-/** Server env. Every service is optional: a missing key turns that integration off. */
 export const env = schema.parse(process.env);
