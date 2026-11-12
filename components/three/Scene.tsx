@@ -6,12 +6,12 @@ import { useRef, type RefObject } from "react";
 import { REDUCED_MOTION } from "@/lib/detectLiteMode";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import { useThemeColors } from "@/lib/useThemeColors";
-import { CAMERA_BASE, CameraRig, type CameraRigHandle } from "./CameraRig";
+import { AutoSway } from "./AutoSway";
+import { CameraRig, FRAMING, type CameraRigHandle } from "./CameraRig";
 import { Effects } from "./Effects";
 import { FloatingBadges } from "./FloatingBadges";
 import { Room } from "./Room";
 import { ProgressReporter } from "./ProgressReporter";
-import { TapRotate } from "./TapRotate";
 
 type SceneProps = {
   active: boolean;
@@ -27,25 +27,21 @@ export function Scene({ active, scrollProgress, onReady, onProgress, portal }: S
   const reducedMotion = useMediaQuery(REDUCED_MOTION);
   const rig = useRef<CameraRigHandle>(null);
   const dive = () => rig.current?.dive();
+  const framing = isMobile ? FRAMING.mobile : FRAMING.desktop;
 
-  const world = (
-    <>
-      <Room colors={colors} onMonitorClick={dive} portal={portal} />
-      <FloatingBadges portal={portal} />
-    </>
-  );
+  const room = <Room colors={colors} onMonitorClick={dive} />;
 
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
       dpr={isMobile ? [1, 1.5] : [1, 2]}
-      camera={{ position: CAMERA_BASE.toArray(), fov: 30, near: 0.1, far: 50 }}
+      camera={{ position: framing.position.toArray(), fov: framing.fov, near: 0.1, far: 50 }}
       gl={{ antialias: !isMobile, powerPreference: "high-performance" }}
       onCreated={() => requestAnimationFrame(onReady)}
       className="!touch-pan-y"
     >
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[4, 6, 3]} intensity={1.1} color="#dfe7ff" />
+      <ambientLight intensity={isMobile ? 0.85 : 0.55} />
+      <directionalLight position={[4, 6, 3]} intensity={isMobile ? 1.4 : 1.1} color="#dfe7ff" />
       <pointLight
         position={[0.2, 0.6, -2.0]}
         intensity={2.2}
@@ -54,10 +50,15 @@ export function Scene({ active, scrollProgress, onReady, onProgress, portal }: S
       />
       <pointLight position={[-2.2, 0.9, -0.4]} intensity={1.4} distance={3} color={colors.accent} />
 
-      <CameraRig ref={rig} scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
+      <CameraRig
+        ref={rig}
+        scrollProgress={scrollProgress}
+        reducedMotion={reducedMotion}
+        framing={framing}
+      />
 
       {isMobile ? (
-        <TapRotate>{world}</TapRotate>
+        <AutoSway paused={reducedMotion}>{room}</AutoSway>
       ) : (
         <PresentationControls
           global={false}
@@ -68,7 +69,8 @@ export function Scene({ active, scrollProgress, onReady, onProgress, portal }: S
           azimuth={[-0.45, 0.35]}
           enabled={!reducedMotion}
         >
-          {world}
+          {room}
+          <FloatingBadges portal={portal} />
         </PresentationControls>
       )}
 

@@ -17,6 +17,7 @@ export type Profile = {
     headline: { before: string; accent: string; after: string };
     intro: string;
     hint: string;
+    mobileHint: string;
   };
   about: {
     headline: string;
@@ -43,6 +44,7 @@ export const profile: Profile = {
     headline: { before: "I build the ", accent: "whole stack", after: " — and make it feel fast." },
     intro: "[One-line intro: what you build, for whom, and what you care about.]",
     hint: "drag the room to orbit · click the monitor to enter the terminal",
+    mobileHint: "tap the monitor to enter the terminal",
   },
   about: {
     headline: "[About headline — one sentence about how you work.]",

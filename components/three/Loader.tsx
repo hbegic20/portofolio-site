@@ -52,7 +52,7 @@ export function Loader({ mounting, progress, done }: LoaderProps) {
       </p>
       <Line ok>page ready — 3D loads when the browser is idle</Line>
       <Line ok={mounting}>webgl context</Line>
-      <Line ok={done}>loading room.glb … {Math.round(pct)}%</Line>
+      <Line ok={done}>loading kit.glb … {Math.round(pct)}%</Line>
       <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-border">
         <div
           className="h-full bg-accent transition-[width] duration-300"

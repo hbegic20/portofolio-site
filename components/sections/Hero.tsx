@@ -25,7 +25,7 @@ const lines: TerminalLine[] = [
 ];
 
 export function Hero() {
-  const { headline, intro, hint } = profile.hero;
+  const { headline, intro, hint, mobileHint } = profile.hero;
 
   return (
     <section id="top" aria-labelledby="top-heading" className="overflow-hidden py-12 md:py-24">
@@ -65,11 +65,11 @@ export function Hero() {
         </div>
 
         <div className="relative min-w-0">
-          <HeroCanvas />
+          <HeroCanvas mobileHint={mobileHint} />
           <Terminal
             title="~/zsh"
             lines={lines}
-            className="relative -mt-16 ml-auto w-[min(100%,330px)] sm:absolute sm:right-[-16px] sm:bottom-[-44px] sm:mt-0"
+            className="absolute bottom-[-44px] left-[-16px] hidden w-[330px] md:block"
           />
         </div>
       </Container>

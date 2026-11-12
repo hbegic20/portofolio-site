@@ -6,8 +6,12 @@ import { Vector3 } from "three";
 import { gsap } from "@/lib/gsap";
 import { scrollToId } from "@/lib/scroll";
 
-export const CAMERA_BASE = new Vector3(6.4, 3.7, 7.0);
-const LOOK_AT = new Vector3(-0.25, 0.2, -1.1);
+export type Framing = { position: Vector3; lookAt: Vector3; fov: number };
+
+export const FRAMING = {
+  desktop: { position: new Vector3(6.4, 3.7, 7.0), lookAt: new Vector3(-0.25, 0.2, -1.1), fov: 30 },
+  mobile: { position: new Vector3(4.2, 2.5, 6.0), lookAt: new Vector3(-0.3, 0.0, -1.4), fov: 35 },
+} satisfies Record<string, Framing>;
 const SCREEN = new Vector3(0.2, 0.42, -2.72);
 const PARALLAX = 0.3;
 const DOLLY = 1.6;
@@ -18,13 +22,15 @@ type CameraRigProps = {
   ref?: Ref<CameraRigHandle>;
   scrollProgress: RefObject<number>;
   reducedMotion: boolean;
+  framing: Framing;
 };
 
-export function CameraRig({ ref, scrollProgress, reducedMotion }: CameraRigProps) {
+export function CameraRig({ ref, scrollProgress, reducedMotion, framing }: CameraRigProps) {
   const { camera } = useThree();
   const diving = useRef(false);
   const target = useRef(new Vector3());
-  const look = useRef(LOOK_AT.clone());
+  const look = useRef(framing.lookAt.clone());
+  const { position: base, lookAt, fov } = framing;
 
   useImperativeHandle(ref, () => ({
     dive() {
@@ -43,18 +49,22 @@ export function CameraRig({ ref, scrollProgress, reducedMotion }: CameraRigProps
     },
   }));
 
-  useFrame(({ pointer }, delta) => {
+  useFrame(({ pointer, camera: cam }, delta) => {
+    if ("isPerspectiveCamera" in cam && Math.abs(cam.fov - fov) > 0.01) {
+      cam.fov += (fov - cam.fov) * (1 - Math.exp(-delta * 3));
+      cam.updateProjectionMatrix();
+    }
     if (!diving.current) {
       const p = reducedMotion ? 0 : PARALLAX;
       const dolly = (scrollProgress.current ?? 0) * DOLLY;
       target.current.set(
-        CAMERA_BASE.x + pointer.x * p + dolly * 0.6,
-        CAMERA_BASE.y + pointer.y * p + dolly * 0.35,
-        CAMERA_BASE.z + dolly,
+        base.x + pointer.x * p + dolly * 0.6,
+        base.y + pointer.y * p + dolly * 0.35,
+        base.z + dolly,
       );
       const k = 1 - Math.exp(-delta * 3);
       camera.position.lerp(target.current, k);
-      look.current.lerp(LOOK_AT, k);
+      look.current.lerp(lookAt, k);
     }
     camera.lookAt(look.current);
   });

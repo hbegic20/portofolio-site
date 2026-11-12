@@ -11,7 +11,7 @@ import { RoomFallback } from "./RoomFallback";
 
 const Scene = dynamic(() => import("./Scene").then((m) => m.Scene), { ssr: false });
 
-export function HeroCanvas() {
+export function HeroCanvas({ mobileHint }: { mobileHint: string }) {
   const isLiteMode = useUIStore((s) => s.isLiteMode);
   const liteResolved = useUIStore((s) => s.liteResolved);
   const mounting = useIdleMount(liteResolved && !isLiteMode);
@@ -60,27 +60,35 @@ export function HeroCanvas() {
   );
 
   return (
-    <div ref={wrap} className="relative isolate aspect-[4/3.4] w-full">
-      {isLiteMode ? (
-        <RoomFallback />
-      ) : (
-        <div
-          role="img"
-          aria-label={`3D model: ${ROOM_ALT.toLowerCase()}`}
-          className="absolute inset-0"
-        >
-          {mounting && (
-            <Scene
-              active={onScreen}
-              scrollProgress={scrollProgress}
-              onReady={onReady}
-              onProgress={setProgress}
-              portal={wrap}
-            />
-          )}
-          <Loader mounting={mounting} progress={progress} done={ready} />
-        </div>
+    <>
+      <div
+        ref={wrap}
+        className="relative isolate aspect-[5/4] w-full max-md:overflow-hidden max-md:rounded-card max-md:border max-md:border-border max-md:bg-surface-sunk md:aspect-[4/3.4]"
+      >
+        {isLiteMode ? (
+          <RoomFallback />
+        ) : (
+          <div
+            role="img"
+            aria-label={`3D model: ${ROOM_ALT.toLowerCase()}`}
+            className="absolute inset-0"
+          >
+            {mounting && (
+              <Scene
+                active={onScreen}
+                scrollProgress={scrollProgress}
+                onReady={onReady}
+                onProgress={setProgress}
+                portal={wrap}
+              />
+            )}
+            <Loader mounting={mounting} progress={progress} done={ready} />
+          </div>
+        )}
+      </div>
+      {!isLiteMode && (
+        <p className="mt-3 font-mono text-xs text-text-subtle md:hidden">{mobileHint}</p>
       )}
-    </div>
+    </>
   );
 }

@@ -1,120 +1,126 @@
 "use client";
 
-import { useMemo, type RefObject } from "react";
-import { Color } from "three";
+import { useMemo } from "react";
 import type { ThemeColors } from "@/lib/useThemeColors";
+import { KitPiece, type Palette } from "./KitPiece";
 import { MonitorScreen } from "./MonitorScreen";
 import { ServerRack } from "./ServerRack";
-
-type V3 = [number, number, number];
-
-function Block({
-  size,
-  position,
-  color,
-  rough = 0.85,
-}: {
-  size: V3;
-  position: V3;
-  color: string;
-  rough?: number;
-}) {
-  return (
-    <mesh position={position}>
-      <boxGeometry args={size} />
-      <meshStandardMaterial color={color} roughness={rough} />
-    </mesh>
-  );
-}
 
 type RoomProps = {
   colors: ThemeColors;
   onMonitorClick: () => void;
-  portal: RefObject<HTMLElement | null>;
 };
 
-export function Room({ colors, onMonitorClick, portal }: RoomProps) {
-  const c = colors;
-  const leaf = useMemo(() => new Color(c.ok).multiplyScalar(0.42), [c.ok]);
+const TILES = [-2, 0, 2];
+const MONITOR_SCALE = 0.3;
+const DESK_TOP = 0.77;
+const MONITOR: [number, number, number] = [0.2, DESK_TOP, -2.78];
+const SCREEN = {
+  width: 3.79 * MONITOR_SCALE,
+  height: 2.31 * MONITOR_SCALE,
+  centerY: 1.715 * MONITOR_SCALE,
+  front: 0.16 * MONITOR_SCALE + 0.004,
+  tilt: Math.atan2(0.32, 2.31),
+};
+
+function palettes(c: ThemeColors) {
+  const furniture: Palette = {
+    wood: { color: "#4a3a33" },
+    woodDark: { color: "#33271f" },
+    metal: { color: "#8b93a8", rough: 0.5 },
+    metalMedium: { color: "#2b3350", rough: 0.6 },
+    metalDark: { color: "#0d1222", rough: 0.5 },
+    carpet: { color: "#1f2b52" },
+    carpetDarker: { color: "#18213f" },
+    carpetWhite: { color: "#c9d0e0" },
+    plant: { color: "#2f8f5b" },
+    lamp: { color: "#ffd9a0", emissive: "#ffb85c", intensity: 0.4 },
+    glass: { color: c["surface-sunk"], emissive: c.accent, intensity: 0.35 },
+    default: { color: c.border },
+  };
+  const wall: Palette = {
+    ...furniture,
+    wood: { color: "#2c3554" },
+    metalDark: { color: "#1d2440" },
+    _defaultMat: { color: "#1d2440" },
+  };
+  const floor: Palette = { ...furniture, wood: { color: "#121828" } };
+  const monitor: Palette = { ...furniture, metal: { color: c["surface-sunk"] } };
+  return { furniture, wall, floor, monitor };
+}
+
+export function Room({ colors: c, onMonitorClick }: RoomProps) {
+  const p = useMemo(() => palettes(c), [c]);
+
   return (
     <group position={[0, -1.1, 0]}>
-      <Block size={[6, 0.1, 6]} position={[0, -0.05, 0]} color={c.surface} />
-      <Block size={[6, 3.2, 0.1]} position={[0, 1.6, -3.05]} color={c.border} />
-      <Block size={[0.1, 3.2, 6]} position={[-3.05, 1.6, 0]} color={c["border-strong"]} />
-
-      <Block size={[2.6, 0.01, 1.8]} position={[0.2, 0.005, -1.2]} color={c["bg-alt"]} />
-
-      <Block
-        size={[2.6, 0.06, 1.1]}
-        position={[0.2, 0.76, -2.4]}
-        color={c["border-strong"]}
-        rough={0.6}
-      />
-      {[-1.15, 1.15].flatMap((x) =>
-        [-2.85, -1.95].map((z) => (
-          <Block
-            key={`${x}${z}`}
-            size={[0.06, 0.76, 0.06]}
-            position={[0.2 + x, 0.38, z]}
-            color={c.bg}
-          />
+      {TILES.flatMap((x) =>
+        TILES.map((z) => (
+          <KitPiece key={`f${x}${z}`} part="floorFull" palette={p.floor} position={[x, -0.1, z]} />
         )),
       )}
-
-      <Block size={[0.4, 0.02, 0.25]} position={[0.2, 0.8, -2.65]} color={c.bg} />
-      <Block size={[0.07, 0.36, 0.07]} position={[0.2, 0.98, -2.7]} color={c.bg} />
-      <Block size={[1.36, 0.8, 0.05]} position={[0.2, 1.52, -2.75]} color={c.bg} rough={0.4} />
-      <MonitorScreen
-        colors={c}
-        position={[0.2, 1.52, -2.722]}
-        onClick={onMonitorClick}
-        portal={portal}
-      />
-
-      <Block size={[0.9, 0.03, 0.28]} position={[0.2, 0.805, -2.1]} color={c.bg} rough={0.5} />
-      <mesh position={[1.05, 0.85, -2.15]}>
-        <cylinderGeometry args={[0.06, 0.055, 0.12, 20]} />
-        <meshStandardMaterial color={c["text-subtle"]} roughness={0.5} />
-      </mesh>
-
-      <Block size={[0.55, 0.06, 0.55]} position={[0.2, 0.5, -1.5]} color={c.bg} />
-      <Block size={[0.55, 0.62, 0.06]} position={[0.2, 0.84, -1.24]} color={c.bg} />
-      <Block size={[0.06, 0.47, 0.06]} position={[0.2, 0.235, -1.5]} color={c["surface-sunk"]} />
-
-      <ServerRack colors={c} position={[-2.4, 0, -2.4]} />
-
-      <Block size={[0.06, 1.25, 1.55]} position={[-2.98, 1.85, -0.4]} color={c.bg} />
-      <mesh position={[-2.94, 1.85, -0.4]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[1.4, 1.1]} />
-        <meshStandardMaterial
-          color={c["surface-sunk"]}
-          emissive={c.accent}
-          emissiveIntensity={0.22}
-          toneMapped={false}
-        />
-      </mesh>
-
-      <Block size={[1.1, 0.04, 0.26]} position={[1.9, 2.05, -2.87]} color={c["border-strong"]} />
-      {[0, 1, 2, 3].map((i) => (
-        <Block
-          key={i}
-          size={[0.08, 0.28 - (i % 2) * 0.05, 0.2]}
-          position={[1.5 + i * 0.12, 2.2 - (i % 2) * 0.025, -2.87]}
-          color={[c["code-kw"], c.accent, c["code-str"], c.ok][i]}
-          rough={0.7}
+      {TILES.map((x) => (
+        <KitPiece key={`b${x}`} part="wall" palette={p.wall} position={[x, 0, -3.05]} />
+      ))}
+      {TILES.map((z) => (
+        <KitPiece
+          key={`l${z}`}
+          part={z === 0 ? "wallWindow" : "wall"}
+          palette={p.wall}
+          position={[-3.05, 0, z]}
+          rotation={Math.PI / 2}
         />
       ))}
-      <Block size={[0.8, 1.05, 0.02]} position={[-1.1, 2.05, -2.99]} color={c["surface-sunk"]} />
-      <Block size={[0.5, 0.04, 0.01]} position={[-1.1, 2.3, -2.975]} color={c.accent} />
-      <Block size={[0.36, 0.04, 0.01]} position={[-1.17, 2.18, -2.975]} color={c["text-subtle"]} />
 
-      <mesh position={[2.45, 0.25, -2.45]}>
-        <cylinderGeometry args={[0.22, 0.17, 0.5, 20]} />
-        <meshStandardMaterial color={c["border-strong"]} roughness={0.9} />
+      <KitPiece part="rugRectangle" palette={p.furniture} position={[0.3, 0, -1.7]} />
+      <KitPiece part="desk" palette={p.furniture} position={[0.2, 0, -2.6]} rotation={Math.PI} />
+      <KitPiece
+        part="computerScreen"
+        palette={p.monitor}
+        position={MONITOR}
+        rotation={Math.PI}
+        scale={MONITOR_SCALE}
+      />
+      <MonitorScreen
+        colors={c}
+        position={[MONITOR[0], DESK_TOP + SCREEN.centerY, MONITOR[2] + SCREEN.front]}
+        width={SCREEN.width}
+        height={SCREEN.height}
+        tilt={SCREEN.tilt}
+        onClick={onMonitorClick}
+      />
+      <KitPiece part="computerKeyboard" palette={p.furniture} position={[0.2, DESK_TOP, -2.38]} />
+      <KitPiece part="computerMouse" palette={p.furniture} position={[0.68, DESK_TOP, -2.38]} />
+      <KitPiece part="lampSquareTable" palette={p.furniture} position={[0.78, DESK_TOP, -2.8]} />
+      <KitPiece part="books" palette={p.furniture} position={[-0.32, DESK_TOP, -2.82]} />
+      <KitPiece part="chairDesk" palette={p.furniture} position={[0.2, 0, -1.85]} />
+
+      <ServerRack colors={c} position={[-2.4, 0, -2.4]} />
+      <KitPiece part="speakerSmall" palette={p.furniture} position={[-1.55, 0, -2.78]} />
+
+      <KitPiece part="bookcaseOpen" palette={p.furniture} position={[2.1, 0, -2.75]} />
+      <KitPiece part="plantSmall1" palette={p.furniture} position={[2.1, 1.76, -2.75]} />
+      <KitPiece part="books" palette={p.furniture} position={[2.1, 0.45, -2.75]} />
+      <KitPiece part="pottedPlant" palette={p.furniture} position={[2.45, 0, -1.4]} />
+      <KitPiece
+        part="cardboardBoxClosed"
+        palette={p.furniture}
+        position={[-2.35, 0, -1.25]}
+        rotation={0.4}
+      />
+      <pointLight position={[0.78, 1.25, -2.55]} intensity={1.2} distance={2.2} color="#ffb85c" />
+
+      <mesh position={[-1.0, 1.85, -2.99]}>
+        <boxGeometry args={[0.7, 0.9, 0.02]} />
+        <meshStandardMaterial color={c["surface-sunk"]} roughness={0.8} />
       </mesh>
-      <mesh position={[2.45, 0.85, -2.45]}>
-        <icosahedronGeometry args={[0.42, 0]} />
-        <meshStandardMaterial color={leaf} roughness={0.9} flatShading />
+      <mesh position={[-1.0, 2.05, -2.975]}>
+        <boxGeometry args={[0.44, 0.04, 0.01]} />
+        <meshStandardMaterial color={c.accent} emissive={c.accent} emissiveIntensity={0.6} />
+      </mesh>
+      <mesh position={[-1.06, 1.94, -2.975]}>
+        <boxGeometry args={[0.32, 0.04, 0.01]} />
+        <meshStandardMaterial color={c["text-subtle"]} />
       </mesh>
     </group>
   );
