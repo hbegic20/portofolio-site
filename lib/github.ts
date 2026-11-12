@@ -1,7 +1,6 @@
 import "server-only";
 import { cacheLife } from "next/cache";
 import { z } from "zod";
-import type { PinnedRepo } from "@/content/oss";
 import { env } from "./env";
 
 const levels = [
@@ -31,17 +30,6 @@ const responseSchema = z.object({
           ),
         }),
       }),
-      pinnedItems: z.object({
-        nodes: z.array(
-          z.object({
-            name: z.string(),
-            description: z.string().nullable(),
-            url: z.string(),
-            stargazerCount: z.number(),
-            primaryLanguage: z.object({ name: z.string() }).nullable(),
-          }),
-        ),
-      }),
     }),
   }),
 });
@@ -61,19 +49,6 @@ const query = /* GraphQL */ `
           }
         }
       }
-      pinnedItems(first: 3, types: REPOSITORY) {
-        nodes {
-          ... on Repository {
-            name
-            description
-            url
-            stargazerCount
-            primaryLanguage {
-              name
-            }
-          }
-        }
-      }
     }
   }
 `;
@@ -83,10 +58,7 @@ export type ContributionDay = { date: string; count: number; level: 0 | 1 | 2 | 
 export type GitHubActivity = {
   total: number;
   weeks: ContributionDay[][];
-  pinned: PinnedRepo[];
 };
-
-const stars = new Intl.NumberFormat("en", { notation: "compact" });
 
 export async function getGitHubActivity(login: string): Promise<GitHubActivity | null> {
   "use cache";
@@ -105,7 +77,7 @@ export async function getGitHubActivity(login: string): Promise<GitHubActivity |
     const parsed = responseSchema.safeParse(await res.json());
     if (!parsed.success) throw new Error("unexpected GitHub API response");
 
-    const { contributionsCollection, pinnedItems } = parsed.data.data.user;
+    const { contributionsCollection } = parsed.data.data.user;
     const calendar = contributionsCollection.contributionCalendar;
 
     return {
@@ -117,13 +89,6 @@ export async function getGitHubActivity(login: string): Promise<GitHubActivity |
           level: levels.indexOf(d.contributionLevel) as ContributionDay["level"],
         })),
       ),
-      pinned: pinnedItems.nodes.map((r) => ({
-        name: r.name,
-        description: r.description ?? "",
-        language: r.primaryLanguage?.name ?? "—",
-        stars: stars.format(r.stargazerCount),
-        href: r.url,
-      })),
     };
   } catch (err) {
     console.warn(`[github] ${err instanceof Error ? err.message : String(err)} — hiding grid`);

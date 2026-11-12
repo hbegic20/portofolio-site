@@ -161,8 +161,8 @@ export const projects: Project[] = [
     ],
     media: {
       type: "image",
-      src: "/projects/gym-tracker-desktop.jpg",
-      mobileSrc: "/projects/gym-tracker-mobile.jpg",
+      src: "/projects/gym-tracker-overview.jpg",
+      mobileSrc: "/projects/gym-tracker-today-mobile.jpg",
       alt: "Gym Tracker overview: next workout A2 Chest + Back with its five exercises, weekly progress and sets per muscle this week",
     },
     overview: {

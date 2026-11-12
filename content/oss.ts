@@ -2,7 +2,7 @@ export type PinnedRepo = {
   name: string;
   description: string;
   language: string;
-  stars: string;
+  stars?: string;
   href: string;
 };
 
@@ -14,23 +14,19 @@ export const pinnedRepos: PinnedRepo[] = [
     description:
       "Real estate listings for Bugojno and Srednjobosanski kanton — Next.js 16, Tailwind v4, Supabase.",
     language: "TypeScript",
-    stars: "0",
     href: "https://github.com/hbegic20/avlija",
   },
   {
-    name: "tabla-app",
-    description:
-      "Two-sided learning app with an AI tutor, flashcards and quizzes — React + Vite on Supabase.",
-    language: "TypeScript",
-    stars: "0",
-    href: "https://github.com/hbegic20/tabla-app",
+    name: "dzbugojno.ba",
+    description: "Website for Dom zdravlja Bugojno, the town's public health centre.",
+    language: "Website",
+    href: "https://dzbugojno.ba",
   },
   {
-    name: "marketplace-agent",
+    name: "fermented.film",
     description:
-      "NestJS + Prisma API behind an AI-powered local services marketplace, with public and admin search.",
-    language: "TypeScript",
-    stars: "0",
-    href: "https://github.com/hbegic20/marketplace-agent",
+      "Website for Fermented Film, a film production services company working with international clients.",
+    language: "Website",
+    href: "https://www.fermented.film",
   },
 ];

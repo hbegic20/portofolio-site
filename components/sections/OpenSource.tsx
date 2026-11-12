@@ -11,7 +11,6 @@ import { ContributionGrid } from "./ContributionGrid";
 
 export async function OpenSource() {
   const github = await getGitHubActivity(githubLogin);
-  const repos = github?.pinned.length ? github.pinned : pinnedRepos;
 
   return (
     <Section id="oss">
@@ -23,7 +22,7 @@ export async function OpenSource() {
       )}
 
       <ul className={cn("grid gap-4 md:grid-cols-3", github ? "mt-4" : "mt-12")}>
-        {repos.map((repo, i) => (
+        {pinnedRepos.map((repo, i) => (
           <li key={i} data-reveal="item">
             <Card className="group relative flex h-full flex-col gap-3 p-6 transition-colors hover:border-border-strong">
               <h3 className="flex items-center justify-between gap-2 font-mono text-sm">
@@ -38,10 +37,12 @@ export async function OpenSource() {
               <p className="flex-1 text-sm text-text-muted">{repo.description}</p>
               <p className="flex items-center gap-4 font-mono text-xs text-text-subtle">
                 <span>{repo.language}</span>
-                <span className="flex items-center gap-1">
-                  <Star aria-hidden className="size-3.5" />
-                  <span className="sr-only">Stars:</span> {repo.stars}
-                </span>
+                {repo.stars !== undefined && (
+                  <span className="flex items-center gap-1">
+                    <Star aria-hidden className="size-3.5" />
+                    <span className="sr-only">Stars:</span> {repo.stars}
+                  </span>
+                )}
               </p>
             </Card>
           </li>
